@@ -29,7 +29,11 @@ public class TestInstanceGenerator {
 		for(int i = 0; i < 100; i++){
 			nbOp = rGen.nextInt(50-minNbOperations)+10;
 			nbEq = rGen.nextInt(15-minNbEquipes)+5;
-			new InstanceGenerator(nbEq, nbOp, seed);
+			try {
+				new InstanceGenerator(nbEq, nbOp, "./instances");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			System.out.println("Generated O"+nbOp+"E"+nbEq);
 		}
 		System.out.println("Complete");

@@ -15,8 +15,7 @@ import java.util.Random;
  * I = Instance index (generated based of current files in instance folder)<br />
  * O = Number of operations (parameter given)<br />
  * E = Number of teams (parameter given)<br />
- * R = Percentage of operations that cannot be performed by each team (randomly generated between 0 and 50%<br />
- * The instances are stored in the folder "instances"
+ * R = Percentage of operations that cannot be performed by each team (randomly generated between 10 and 50%<br />
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -47,6 +46,10 @@ public class InstanceGenerator {
 	 */
 	private int nbOperations;
 	/**
+	 * Folder wher instance should be stored
+	 */
+	private String folderPath;
+	/**
 	 * Percentage of incompatibility between teams and operations
 	 */
 	private int prctIncmp;
@@ -65,16 +68,22 @@ public class InstanceGenerator {
 
 
 	/**
-	 * Generates file with random generator seeded
+	 * Generates file with random generator seeded. Must only be used for testing purposes
 	 * @param nbEquipes number of teams
 	 * @param nbOperations number of operations
+	 * @param folderPath folder path where instance should be stored (e.g. ./instances)
 	 * @param rSeed seed of random generator
+	 * @throws Exception Generated if destination folder does note exist
 	 */
-	public InstanceGenerator(int nbEquipes, int nbOperations, long rSeed){
+	public InstanceGenerator(int nbEquipes, int nbOperations, String folderPath, long rSeed) throws Exception{
+		if (!new File(folderPath).exists()) {
+		    throw new Exception("Destination folder does not exist");
+		}
 		this.nbEquipes = nbEquipes;
 		this.nbOperations = nbOperations;
+		this.folderPath = folderPath;
 		this.rGen = new Random(rSeed);
-		this.prctIncmp = this.rGen.nextInt(5);
+		this.prctIncmp = this.rGen.nextInt(5-1)+1;
 		openFile(createFileName());
 		buildInstance();
 		closeFile();
@@ -86,15 +95,23 @@ public class InstanceGenerator {
 	 * Generates unrepeatable random file
 	 * @param nbEquipes number of teams
 	 * @param nbOperations number of operations
+	 * @param folderPath folder path where instance should be stored (e.g. ./instances)
 	 * @param rSeed seed of random generator
+	 * @throws Exception Generated if destination folder does note exist
 	 */
-	public InstanceGenerator(int nbEquipes, int nbOperations){
+	public InstanceGenerator(int nbEquipes, int nbOperations, String folderPath) throws Exception{
+		if (!new File(folderPath).exists()) {
+		    throw new Exception("Destination folder does not exist");
+		}
 		this.nbEquipes = nbEquipes;
 		this.nbOperations = nbOperations;
+		this.folderPath = folderPath;
 		this.rGen = new Random();
+		this.prctIncmp = this.rGen.nextInt(5-1)+1;
 		openFile(createFileName());
 		buildInstance();
 		closeFile();
+
 	}
 
 
@@ -167,7 +184,7 @@ public class InstanceGenerator {
 	 * @return file name and path
 	 */
 	private String createFileName(){
-		File[] files = new File("./instances").listFiles();
+		File[] files = new File(this.folderPath).listFiles();
 		String filename;
 		int nbEq, nbOp, nbR, iInst, maxInst = 0;
 		for (File file : files){
@@ -183,6 +200,6 @@ public class InstanceGenerator {
 				}
 			}
 		}	    
-		return "./instances/I"+maxInst+"O"+this.nbOperations+"E"+this.nbEquipes+"R"+this.prctIncmp+".csv";
+		return this.folderPath+"/I"+maxInst+"O"+this.nbOperations+"E"+this.nbEquipes+"R"+this.prctIncmp+".csv";
 	}
 }
