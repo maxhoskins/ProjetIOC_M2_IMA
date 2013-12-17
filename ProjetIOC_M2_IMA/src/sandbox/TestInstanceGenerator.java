@@ -5,7 +5,7 @@ package sandbox;
 
 import java.util.Random;
 
-import hoskins.viaud.m2Poc.instanceGenerator.InstanceGenerator;
+import hoskins.viaud.poc.utils.InstanceGenerator;
 
 /**
  * Used to test instance generator and build sets of instances

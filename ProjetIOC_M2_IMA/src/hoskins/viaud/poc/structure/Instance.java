@@ -38,7 +38,7 @@ public class Instance {
 	/**
 	 * Cost of an overtime hour
 	 */
-	private int c;
+	private double c;
 	
 	/**
 	 * Matrix of profit by team/operation pair
@@ -49,13 +49,18 @@ public class Instance {
 	 * Matrix of availability by team/operation pair
 	 */
 	private int[][] a;
+	
+	/**
+	 * Instance of the class
+	 */
+	public static Instance instance = null;
 
 	public Instance(int no, int[] t, int ne, int l, int s, int c, int[][] p) {
 		this.no = no;
 		this.t = t;
 		this.ne = ne;
-		this.l = l;
-		this.s = s;
+		this.l = l*60;
+		this.s = s*60;
 		this.c = c;
 		this.p = p;
 		this.a = buildAvailability(this.p);
@@ -101,7 +106,7 @@ public class Instance {
 		this.s = s;
 	}
 
-	public int getC() {
+	public double getC() {
 		return c;
 	}
 
@@ -134,10 +139,11 @@ public class Instance {
 		int[][] a = new int[p.length][p[0].length];
 		for(int i = 0; i < p.length; i++)
 			for(int j = 0; j < p[i].length; j++)
-				if(p[i][j] != 0)
+				if(p[i][j] > 0)
 					a[i][j] = 1;
 				else
 					a[i][j] = 0;
+		
 		return a;
 	}
 	

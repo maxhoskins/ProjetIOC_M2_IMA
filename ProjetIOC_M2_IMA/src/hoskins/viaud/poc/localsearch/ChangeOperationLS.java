@@ -3,6 +3,7 @@
  */
 package hoskins.viaud.poc.localsearch;
 
+import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
@@ -16,8 +17,40 @@ public class ChangeOperationLS implements LocalSearch {
 	 */
 	@Override
 	public Solution performLocalSearch(Solution s) {
-		// TODO Auto-generated method stub
-		return null;
+		boolean noMoreImprovement = false;
+		Solution s2 = null, bestSol = null;
+
+		while(!noMoreImprovement){
+			double bestImprovement = 0;
+			for(int i = 0; i < s.getS().length; i++)
+				for(int j = 0; j < Instance.instance.getNe(); j++)
+					if(Instance.instance.getA()[j][i] == 1 && s.getS()[i] != j){
+						s2 = s.clone();
+
+						//Change decision variables
+						s2.getX()[s2.getS()[i]][i] = 0;
+						s2.getX()[j][i] = 1;
+
+						//Change working time for each team
+						s2.computeOvertime();
+
+						if(s2.isFeasible()){
+							s2.calculateOF();
+
+							if(s2.getOf() - s.getOf() > bestImprovement){
+								bestImprovement = s2.getOf() - s.getOf();
+								bestSol = s2.clone();
+							}
+						}
+					}
+
+			if(bestImprovement == 0)
+				noMoreImprovement = true;
+			else
+				s = bestSol.clone();
+		}
+
+		return s;
 	}
 
 }
