@@ -3,13 +3,11 @@
  */
 package hoskins.viaud.poc.localsearch;
 
-import java.util.Arrays;
-
 import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Perform a swap method as local search method
+ * Perform a swap method as local search method (swap between all operations)
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -29,18 +27,23 @@ public class SwapLS implements LocalSearch {
 			for(int i = 0; i < s.getS().length; i++)
 				for(int j = i + 1; j < s.getS().length; j++)
 					if(Instance.instance.getA()[s.getS()[j]][i] == 1 && Instance.instance.getA()[s.getS()[i]][j] == 1 && s.getS()[i] != s.getS()[j]){
+						//Copy the current solution
 						s2 = s.clone();
 
-						//Change decision variables
+						//Change decision variables by swapping teams affected to operations
 						s2.getX()[s2.getS()[i]][i] = 0; s2.getX()[s2.getS()[j]][j] = 0;
 						s2.getX()[s2.getS()[j]][i] = 1; s2.getX()[s2.getS()[i]][j] = 1;
 						
 						//Change working time for each team
 						s2.computeOvertime();
 						
+						//Check if the new solution is feasible
 						if(s2.isFeasible()){
+							
+							//Compute OF value for the current solution
 							s2.calculateOF();
 							
+							//Set the best solution if best improvement is surpassed
 							if(s2.getOf() - s.getOf() > bestImprovement){
 								bestImprovement = s2.getOf() - s.getOf();
 								bestSol = s2.clone();
@@ -48,6 +51,7 @@ public class SwapLS implements LocalSearch {
 						}
 					}
 			
+			//Stop the method if no improvement is found, set current solution has best found solution otherwise
 			if(bestImprovement == 0)
 				noMoreImprovement = true;
 			else

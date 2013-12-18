@@ -25,30 +25,33 @@ public class InstanceReader {
 	 */
 	public static void readFile(File file, int l, int s, int c) throws IOException{
 		int i = 0, k = 0, nbOperations = 0, nbEquipes = 0;
-		int[] t = null;
-		int[][] p = null;		
+		int[] t = null; int[][] p = null;		
 		BufferedReader reader = new BufferedReader(new FileReader(file));
 
         String line = "";
         while((line = reader.readLine())!=null){
             switch (i) {
             case 0 :
+            	//Get number of operations
             	nbOperations = Integer.parseInt(line);
             	t = new int[nbOperations];
             	i++;
             	break;
-            case 1 :	
+            case 1 :
+            	//Get number of teams
             	nbEquipes = Integer.parseInt(line);
             	p = new int[nbEquipes][nbOperations];
             	i++;
             	break;
             case 2 :
+            	//Get operation durations
             	String[] duration = line.split(";");
             	for(int j = 0; j < duration.length; j++)
             		t[j] = Integer.parseInt(duration[j]);
             	i++;
             	break;
             default :
+            	//Get profit for each team/operation association
             	String[] profit = line.split(";");
             	for(int j = 0; j < profit.length; j++)
             		p[k][j] = Integer.parseInt(profit[j]);
@@ -59,6 +62,7 @@ public class InstanceReader {
         
         reader.close();
         
+        //Create the instance
 		Instance.instance = new Instance(nbOperations, t, nbEquipes, l, s, c, p);
 	}
 }

@@ -4,7 +4,7 @@
 package hoskins.viaud.poc.structure;
 
 /**
- * Class to store data for an instance 
+ * Store data for an instance 
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -143,7 +143,6 @@ public class Instance {
 					a[i][j] = 1;
 				else
 					a[i][j] = 0;
-		
 		return a;
 	}
 	

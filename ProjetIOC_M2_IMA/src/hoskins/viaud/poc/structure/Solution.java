@@ -4,7 +4,7 @@
 package hoskins.viaud.poc.structure;
 
 /**
- * Class to store the representation of a solution
+ * Store the representation of a solution
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -42,7 +42,7 @@ public class Solution implements Cloneable{
 	}
 	
 	/**
-	 * Create a solution
+	 * Create a solution only for cloning
 	 * @param x team/operation matrix
 	 * @param h overtime working time
 	 */
@@ -112,12 +112,12 @@ public class Solution implements Cloneable{
 		for(int i = 0; i < Instance.instance.getNe(); i++)
 			for(int j = 0; j < Instance.instance.getNo(); j++)
 				if(x[i][j] > Instance.instance.getA()[i][j])
-					return isFeasible = false;
+					isFeasible = false;
 		
 		//Check if teams worked more than overtime working time
 		for(int i = 0; i < Instance.instance.getNe(); i++)
 			if(Instance.instance.getS() < h[i])
-				return isFeasible = false;
+				isFeasible = false;
 		
 		return isFeasible;
 	}
@@ -139,7 +139,7 @@ public class Solution implements Cloneable{
 	}
 	
 	/**
-	 * Build solution representation
+	 * Build solution representation for local search method
 	 */
 	private int[] buildRepresentation(){
 		int[] s = new int[Instance.instance.getNo()];
@@ -152,10 +152,15 @@ public class Solution implements Cloneable{
 		return s;
 	}
 	
+	/**
+	 * Clone a solution
+	 */
 	public Solution clone(){
+		//Perform deep cloning of x matrix
 		int[][] y = x.clone();
 		for (int i = 0; i < y.length; i++) 
 		    y[i] = y[i].clone();
+		
 		return new Solution(y, h.clone(), of);
 	}
 	

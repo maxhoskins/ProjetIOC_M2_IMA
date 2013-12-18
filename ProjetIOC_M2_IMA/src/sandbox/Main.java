@@ -4,7 +4,6 @@
 package sandbox;
 
 import hoskins.viaud.poc.heuristic.Heuristic;
-import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 import hoskins.viaud.poc.utils.InstanceReader;
 
@@ -33,16 +32,13 @@ public class Main {
 		int counter = 0;
 		
 		for(File file : listOfFiles){
-			//Create Instance object associate to the current file
+			//Instantiate Instance object associate to the current file
 			InstanceReader.readFile(file,l,s,c);
 			//Solve the problem
 			Solution sol = Heuristic.performHeuristic();
 			
 			if(!sol.isFeasible())
 				counter++;
-			
-			System.out.println(sol.isFeasible() + ":" +sol.getOf());
-			
 			
 			//Write the solution in a .csv file
 			
