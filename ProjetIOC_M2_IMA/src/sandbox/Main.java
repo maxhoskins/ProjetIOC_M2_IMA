@@ -4,6 +4,7 @@
 package sandbox;
 
 import hoskins.viaud.poc.heuristic.Heuristic;
+import hoskins.viaud.poc.metaheuristic.VNS;
 import hoskins.viaud.poc.structure.Solution;
 import hoskins.viaud.poc.utils.InstanceReader;
 
@@ -32,10 +33,17 @@ public class Main {
 		int counter = 0;
 		
 		for(File file : listOfFiles){
+			
 			//Instantiate Instance object associate to the current file
 			InstanceReader.readFile(file,l,s,c);
-			//Solve the problem
+			
+			//Solve the problem with heuristic method
 			Solution sol = Heuristic.performHeuristic();
+			
+			//Solve the problem with VNS algorithm
+			sol = new VNS().performMetaHeuristic(sol, 200);
+			
+			System.out.println("VNS : "+ sol.isFeasible()+ ","+sol.getOf());
 			
 			if(!sol.isFeasible())
 				counter++;

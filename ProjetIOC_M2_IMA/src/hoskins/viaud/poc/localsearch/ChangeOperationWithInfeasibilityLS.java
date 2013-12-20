@@ -8,10 +8,11 @@ import hoskins.viaud.poc.structure.Solution;
 
 /**
  * Perform a change operation method as local search
+ * Infeasible solutions are allowed
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
-public class ChangeOperationLS implements LocalSearch {
+public class ChangeOperationWithInfeasibilityLS implements LocalSearch {
 
 	/* (non-Javadoc)
 	 * @see hoskins.viaud.poc.localsearch.LocalSearch#performLocalSearch(hoskins.viaud.poc.structure.Solution)
@@ -36,17 +37,13 @@ public class ChangeOperationLS implements LocalSearch {
 						//Change working time for each team
 						s2.computeOvertime();
 
-						//Check if the new solution is feasible
-						if(s2.isFeasible()){
-							
-							//Compute OF value for the current solution
-							s2.calculateOF();
+						//Compute OF value for the current solution
+						s2.calculateOF();
 
-							//Set the best solution if gap between solutions is better than the best improvement found
-							if(s2.getOf() - s.getOf() > bestImprovement){
-								bestImprovement = s2.getOf() - s.getOf();
-								bestSol = s2.clone();
-							}
+						//Set the best solution if gap between solutions is better than the best improvement found
+						if(s2.getOf() - s.getOf() > bestImprovement){
+							bestImprovement = s2.getOf() - s.getOf();
+							bestSol = s2.clone();
 						}
 					}
 
