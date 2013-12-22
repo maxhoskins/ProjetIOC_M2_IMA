@@ -20,7 +20,7 @@ public class VNS implements MetaHeuristic {
 	 * @see hoskins.viaud.poc.metaheuristic.MetaHeuristic#performMetaHeuristic(hoskins.viaud.poc.structure.Solution)
 	 */
 	@Override
-	public Solution performMetaHeuristic(Solution s, int nbIterations) {
+	public Solution performMetaHeuristic(Solution s, int nbIterations, Object ... params) {
 		//Initialize iterations and local serach counters
 		int i = 0, k;
 		

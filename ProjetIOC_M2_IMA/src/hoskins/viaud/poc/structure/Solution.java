@@ -52,6 +52,10 @@ public class Solution implements Cloneable{
 		this.s = buildRepresentation();
 		this.of = of;
 	}
+	
+	public void setXValue(int i, int j, int value){
+		this.x[i][j] = value;
+	}
 
 	public int[][] getX() {
 		return x;
@@ -125,7 +129,7 @@ public class Solution implements Cloneable{
 	/**
 	 * Calculate OF
 	 */
-	public void calculateOF(){
+	public double calculateOF(){
 		of = 0;
 		for(int i = 0; i < Instance.instance.getNe(); i++){
 			for(int j = 0; j < Instance.instance.getNo(); j++)
@@ -136,12 +140,13 @@ public class Solution implements Cloneable{
 				of -= Math.ceil((double)h[i]/60.0) * Instance.instance.getC();
 			}
 		}
+		return of;
 	}
 	
 	/**
 	 * Build solution representation for local search method
 	 */
-	private int[] buildRepresentation(){
+	public int[] buildRepresentation(){
 		int[] s = new int[Instance.instance.getNo()];
 		
 		for(int j = 0; j < Instance.instance.getNo(); j++)
@@ -164,4 +169,23 @@ public class Solution implements Cloneable{
 		return new Solution(y, h.clone(), of);
 	}
 	
+	
+	
+	public void printSolution(){
+		System.out.println("Objective Function : "+of);
+		
+		System.out.println("\nOperation to team affecatations");	
+		for(int i = 0; i < Instance.instance.getNo(); i++)
+			System.out.print(i+"\t");
+		for(int op = 0; op < Instance.instance.getNo(); op++)
+			System.out.print(s[op]+"\t");
+		
+		System.out.println("\nTeam overtime work");
+		for(int i = 0; i < Instance.instance.getNe(); i++)
+			System.out.print(i+"\t");
+		for(int eq = 0; eq < Instance.instance.getNe(); eq++)
+			System.out.print(h[eq]+"\t");
+		
+		System.out.println();
+	}
 }

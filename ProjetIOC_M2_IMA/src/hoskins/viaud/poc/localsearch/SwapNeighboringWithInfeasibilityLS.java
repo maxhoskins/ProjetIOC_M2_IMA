@@ -57,4 +57,10 @@ public class SwapNeighboringWithInfeasibilityLS implements LocalSearch{
 
 		return s;
 	}
+	
+	@Override
+	public Solution performLocalSearch(Solution s1, Solution s2) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

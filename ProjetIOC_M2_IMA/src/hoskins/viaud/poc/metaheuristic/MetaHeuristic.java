@@ -18,6 +18,6 @@ public interface MetaHeuristic {
 	 * @param nbIterations number of iterations of the algorithm
 	 * @return a new solution (greater than or equal to s)
 	 */
-	public abstract Solution performMetaHeuristic(Solution s, int nbIterations);
+	public abstract Solution performMetaHeuristic(Solution s, int nbIterations, Object ... params);
 
 }

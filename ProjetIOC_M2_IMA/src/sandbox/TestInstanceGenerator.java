@@ -20,15 +20,12 @@ public class TestInstanceGenerator {
 	public static void main(String[] args) {
 		// seed must be changed to not duplicate instances between runs
 		long seed = 1000;
-		// change based of "solution complexity"
-		int minNbEquipes = 10; // value between 0 and 15
-		int minNbOperations = 30; // value between 0 and 49
 		
 		Random rGen = new Random(seed);
 		int nbOp, nbEq;
 		for(int i = 0; i < 100; i++){
-			nbOp = rGen.nextInt(50-minNbOperations)+10;
-			nbEq = rGen.nextInt(15-minNbEquipes)+5;
+			nbOp = 50;
+			nbEq = 15;
 			try {
 				new InstanceGenerator(nbEq, nbOp, "./instances");
 			} catch (Exception e) {

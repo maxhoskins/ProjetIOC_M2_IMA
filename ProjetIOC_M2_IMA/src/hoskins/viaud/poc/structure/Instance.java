@@ -3,6 +3,8 @@
  */
 package hoskins.viaud.poc.structure;
 
+import java.util.Random;
+
 /**
  * Store data for an instance 
  * @author Maxim HOSKINS and Quentin VIAUD
@@ -51,6 +53,11 @@ public class Instance {
 	private int[][] a;
 	
 	/**
+	 * Random generator
+	 */
+	private Random rand;
+	
+	/**
 	 * Instance of the class
 	 */
 	public static Instance instance = null;
@@ -64,6 +71,11 @@ public class Instance {
 		this.c = c;
 		this.p = p;
 		this.a = buildAvailability(this.p);
+		this.rand = new Random(1000);
+	}
+	
+	public Random getRandom(){
+		return this.rand;
 	}
 	
 	public int getNo() {
