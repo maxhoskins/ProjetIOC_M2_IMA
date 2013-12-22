@@ -30,7 +30,6 @@ public class Heuristic {
 		Solution s = construction();
 		
 		System.out.print("Construction : "+s.isFeasible());
-		
 		//Try to improve solution by performing operation changes
 		Solution s2 = new ChangeOperationLS().performLocalSearch(s);
 		
@@ -48,7 +47,7 @@ public class Heuristic {
 			s = s2.clone();
 		
 		System.out.print(" Swap : " + s.isFeasible() + ":" +s.getOf()+"\n");
-				
+
 		return s;
 	}
 	

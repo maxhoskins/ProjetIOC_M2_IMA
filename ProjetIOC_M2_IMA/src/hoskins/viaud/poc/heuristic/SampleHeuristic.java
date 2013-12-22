@@ -95,6 +95,8 @@ public class SampleHeuristic {
 			int workingTime = Integer.MAX_VALUE;
 			int chosenTeam = 0;
 			possibleChoices.clear();
+			
+			
 			// identify all possible choices
 			for(int j = 0; j < Instance.instance.getNe(); j++){
 				if(Instance.instance.getA()[j][i] == 1){
@@ -105,16 +107,18 @@ public class SampleHeuristic {
 			if(nbPossibleChoices > possibleChoices.size())
 				nbPossibleChoices = possibleChoices.size();
 			// select best team within subset of possible teams
-			int tempTeam;
+			int tempTeam, tempIndex;
 			for(int r = 0; r < nbPossibleChoices; r++){
-				tempTeam = Instance.instance.getRandom().nextInt(possibleChoices.size());
+				tempIndex = Instance.instance.getRandom().nextInt(possibleChoices.size());
+				tempTeam = possibleChoices.get(tempIndex);
 				if(t[tempTeam] + Instance.instance.getT()[o[i]] < workingTime){
 					workingTime = t[tempTeam] + Instance.instance.getT()[o[i]];
 					chosenTeam = tempTeam;
 				}
-				possibleChoices.remove(tempTeam);
+				possibleChoices.remove(tempIndex);
 			}
-
+			
+			
 			//Apply change on the selected team (ie set x = 1)
 			t[chosenTeam] = t[chosenTeam] + Instance.instance.getT()[o[i]];
 			x[chosenTeam][i] = 1;

@@ -23,11 +23,11 @@ public class TestInstanceGenerator {
 		
 		Random rGen = new Random(seed);
 		int nbOp, nbEq;
-		for(int i = 0; i < 100; i++){
-			nbOp = 50;
-			nbEq = 15;
+		for(int i = 0; i < 10; i++){
+			nbOp = 150;
+			nbEq = 45;
 			try {
-				new InstanceGenerator(nbEq, nbOp, "./instances");
+				new InstanceGenerator(nbEq, nbOp, "./instancesBig");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

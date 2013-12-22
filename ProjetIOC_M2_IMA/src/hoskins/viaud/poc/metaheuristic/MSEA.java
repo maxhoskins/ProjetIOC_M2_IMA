@@ -99,7 +99,7 @@ public class MSEA implements MetaHeuristic {
 		
 		if(s1.getOf() > heuristicSol.getOf()){
 			System.out.println("------------------------------------------------------");
-			System.out.println("META IMPROVEMES SOLTION, NEW SOLUTION : "+s1.getOf());
+			System.out.println("META IMPROVEMENT : "+(s1.getOf()-heuristicSol.getOf()));
 			System.out.println("------------------------------------------------------");
 		}
 	
