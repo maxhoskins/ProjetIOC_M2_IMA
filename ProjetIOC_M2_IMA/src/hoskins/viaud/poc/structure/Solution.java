@@ -97,7 +97,7 @@ public class Solution implements Cloneable{
 			int sum = 0;
 			for(int j = 0; j < Instance.instance.getNo(); j++)
 				if(x[i][j] == 1)
-					sum ++;
+					sum += Instance.instance.getT()[j];
 			if(Instance.instance.getL() >= sum)
 				this.h[i] = 0;
 			else

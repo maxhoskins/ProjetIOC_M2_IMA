@@ -51,12 +51,11 @@ public class BasicModel implements CPLEXModel {
 
 			cplex.addMaximize(of);
 
-
 			//Constraint - x_ij
 			for(int j = 0; j < Instance.instance.getNo(); j++){
 				IloLinearNumExpr sumXij = cplex.linearNumExpr();
 				for(int i = 0; i < Instance.instance.getNe(); i++){
-					sumXij.addTerm(1, x[i][j]);
+					sumXij.addTerm(1.0, x[i][j]);
 				}
 				cplex.addEq(sumXij, 1.0);
 			}
@@ -71,6 +70,11 @@ public class BasicModel implements CPLEXModel {
 				sumXijTj.addTerm(-1.0, h[i]);
 				cplex.addLe(sumXijTj, Instance.instance.getL());
 			}
+			
+			//Constraint - x_ij <= a_ij
+			for(int i = 0; i < Instance.instance.getNe(); i++)
+				for(int j = 0; j < Instance.instance.getNo(); j++)
+					cplex.addLe(x[i][j],Instance.instance.getA()[i][j]);
 
 			//Solve the model
 			if (cplex.solve()){

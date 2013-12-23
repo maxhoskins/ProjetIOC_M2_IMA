@@ -7,6 +7,7 @@ import hoskins.viaud.poc.heuristic.Heuristic;
 import hoskins.viaud.poc.metaheuristic.MSEA;
 import hoskins.viaud.poc.metaheuristic.VNS;
 import hoskins.viaud.poc.model.BasicModel;
+import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 import hoskins.viaud.poc.utils.InstanceReader;
 import hoskins.viaud.poc.utils.SolutionWriter;
@@ -28,7 +29,7 @@ public class Main {
 		//Folder where instance files are located and parameters of the problem in hour
 		String instanceFolderPath = "./instances"; String resultFolderPath = "./resultsMSEA";
 		int l = 12; int s = 3; int c = 60;
-		
+
 		//runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
 		runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
 	}
@@ -37,7 +38,7 @@ public class Main {
 	public static  void runOneInstance(int l, int s, int c, String instancePath, String resultFolderPath) throws Exception{
 		//Instantiate Instance object associate to the current file
 		File file = new File(instancePath);
-		
+
 		InstanceReader.readFile(file,l,s,c);
 
 		//Solve the problem with heuristic method
@@ -45,7 +46,7 @@ public class Main {
 
 		//Solve the problem with meta algorithm
 		//sol = new VNS().performMetaHeuristic(sol, 200);
-		//sol = new MSEA().performMetaHeuristic(sol, 200, 10);
+		sol = new MSEA().performMetaHeuristic(sol, 200, 10);
 
 		System.out.println("MetaHeuristic : "+ sol.isFeasible()+ ","+sol.getOf());
 
@@ -53,7 +54,7 @@ public class Main {
 			System.out.println("Solution failed <=> not feasible");
 
 		new BasicModel().solveModel();
-		
+
 		//Write the solution in a .csv file
 		new SolutionWriter(sol, file.getName(), resultFolderPath);
 
