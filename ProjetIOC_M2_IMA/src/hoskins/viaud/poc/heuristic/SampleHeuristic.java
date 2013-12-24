@@ -27,10 +27,9 @@ public class SampleHeuristic {
 	public static Solution performHeuristic(){
 		//Initialize the problem to be solved by heuristic method
 		initialization();
-		//Constrcut a solution
+		
+		//Construct a solution
 		Solution s = construction();
-
-		System.out.print("Construction : "+s.isFeasible());
 
 		//Try to improve solution by performing operation changes
 		Solution s2 = new ChangeOperationLS().performLocalSearch(s);
@@ -39,16 +38,12 @@ public class SampleHeuristic {
 		if(s2.getOf() > s.getOf())
 			s = s2.clone();
 
-		System.out.print(" Change operation : "+s.isFeasible());
-
 		//Try to improve solution by performing swap
 		s2 = new SwapLS().performLocalSearch(s);
 
 		//Find the best solution
 		if(s2.getOf() > s.getOf())
 			s = s2.clone();
-
-		System.out.print(" Swap : " + s.isFeasible() + ":" +s.getOf()+"\n");
 
 		return s;
 	}
@@ -58,17 +53,30 @@ public class SampleHeuristic {
 	 * (ie sort operations by increasing number of teams that can make it)
 	 */
 	private static void initialization(){
-		o = new int[Instance.instance.getNo()];
-
-		for(int i = 0; i < Instance.instance.getNo(); i++){
+ArrayList<Integer> temp = new ArrayList<Integer>();
+		
+		//Find the number of teams allowed to perform each operation
+		for(int j = 0; j < Instance.instance.getNo(); j++){
 			int sum = 0;
-			for(int j = 0; j < Instance.instance.getNe(); j++)
-				if(Instance.instance.getA()[j][i] == 1)
+			for(int i = 0; i < Instance.instance.getNe(); i++)
+				if(Instance.instance.getA()[i][j] == 1)
 					sum++;
-			o[i] = sum;
+			temp.add(sum);
 		}
-
-		Arrays.sort(o);
+		
+		o = new int[Instance.instance.getNo()];
+		
+		//Sort the previous table by increasing number of teams
+		for(int j = 0; j < Instance.instance.getNo(); j++){
+			int nbTeam = Instance.instance.getNe() + 1, op = -1;
+			for(int j2 = 0; j2 < temp.size(); j2++)
+				if(temp.get(j2) < nbTeam){
+					nbTeam = temp.get(j2);
+					op = j2;
+				}
+			o[j] = op;
+			temp.set(op, Instance.instance.getNe() + 1);
+		}
 	}
 
 	/**
@@ -99,7 +107,7 @@ public class SampleHeuristic {
 			
 			// identify all possible choices
 			for(int j = 0; j < Instance.instance.getNe(); j++){
-				if(Instance.instance.getA()[j][i] == 1){
+				if(Instance.instance.getA()[j][o[i]] == 1){
 					possibleChoices.add(j);
 				}
 			}
@@ -121,17 +129,11 @@ public class SampleHeuristic {
 			
 			//Apply change on the selected team (ie set x = 1)
 			t[chosenTeam] = t[chosenTeam] + Instance.instance.getT()[o[i]];
-			x[chosenTeam][i] = 1;
+			x[chosenTeam][o[i]] = 1;
 		}
 
 		// Create the solution
 		Solution s = new Solution(x,new int[Instance.instance.getNe()]);
-
-		// Compute overtime for the current solution
-		s.computeOvertime();
-
-		// Compute OF value for the current solution
-		s.calculateOF();
 
 		return s;
 	}

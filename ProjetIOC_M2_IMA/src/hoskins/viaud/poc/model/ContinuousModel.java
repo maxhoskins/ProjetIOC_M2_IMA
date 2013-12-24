@@ -10,11 +10,11 @@ import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 /**
- * Run the basic mixed integer linear program
+ * Run the continuous linear program
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
-public class BasicModel implements CPLEXModel {
+public class ContinuousModel implements CPLEXModel {
 
 	/* (non-Javadoc)
 	 * @see hoskins.viaud.poc.model.CPLEXModel#solveModel()
@@ -30,12 +30,12 @@ public class BasicModel implements CPLEXModel {
 			IloNumVar[][] x = new IloNumVar[Instance.instance.getNe()][Instance.instance.getNo()];
 			for(int i = 0; i < Instance.instance.getNe(); i++)
 				for(int j = 0; j < Instance.instance.getNo(); j++)
-					x[i][j] = cplex.intVar(0,1);
+					x[i][j] = cplex.numVar(0.0, 1.0);
 
 			//Decision variable - h_i
 			IloNumVar[] h = new IloNumVar[Instance.instance.getNe()];
 			for(int i = 0; i < Instance.instance.getNe(); i++)
-				h[i] = cplex.intVar(0,(int)Math.ceil(Instance.instance.getS()/60.0));
+				h[i] = cplex.numVar(0.0,Math.ceil(Instance.instance.getS()/60.0));
 
 
 			//Create objective function

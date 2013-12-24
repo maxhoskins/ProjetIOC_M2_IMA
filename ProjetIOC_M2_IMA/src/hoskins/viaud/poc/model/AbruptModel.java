@@ -10,11 +10,11 @@ import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 /**
- * Run the basic mixed integer linear program
+ * Run the abrupt mixed integer linear program
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
-public class BasicModel implements CPLEXModel {
+public class AbruptModel implements CPLEXModel {
 
 	/* (non-Javadoc)
 	 * @see hoskins.viaud.poc.model.CPLEXModel#solveModel()
@@ -60,17 +60,6 @@ public class BasicModel implements CPLEXModel {
 				cplex.addEq(sumXij, 1.0);
 			}
 
-			//Constraint - x_ij & h_i
-			//Note : constraint is rewrite as follow : SUM[x_ij.t_j] - h_i <= l
-			for(int i = 0; i < Instance.instance.getNe(); i++){
-				IloLinearNumExpr sumXijTj = cplex.linearNumExpr();
-				for(int j = 0; j < Instance.instance.getNo(); j++){
-					sumXijTj.addTerm(Instance.instance.getT()[j], x[i][j]);
-				}
-				sumXijTj.addTerm(-60.0, h[i]);
-				cplex.addLe(sumXijTj, Instance.instance.getL());
-			}
-			
 			//Constraint - x_ij <= a_ij
 			for(int i = 0; i < Instance.instance.getNe(); i++)
 				for(int j = 0; j < Instance.instance.getNo(); j++)
@@ -78,7 +67,7 @@ public class BasicModel implements CPLEXModel {
 
 			//Solve the model
 			if (cplex.solve()){
-				System.out.println("O.F. (SPL) = " + cplex.getObjValue());
+				System.out.println("O.F. (Abrupt model) = " + cplex.getObjValue());
 				System.out.println("CPU = " + cplex.getCplexTime());
 			}
 			cplex.end();

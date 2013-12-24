@@ -31,10 +31,11 @@ public class ChangeOperationWithInfeasibilityLS implements LocalSearch {
 						s2 = s.clone();
 
 						//Change decision variables by changing current team by another able to perform operation
-						s2.getX()[s2.getS()[i]][i] = 0;
-						s2.getX()[j][i] = 1;
+						s2.setXValue(s2.getS()[i], i, 0);
+						s2.setXValue(j, i, 1);
+						s2.buildRepresentation();
 
-						//Change working time for each team
+						//Change overtime value in the new solution
 						s2.computeOvertime();
 
 						//Compute OF value for the current solution

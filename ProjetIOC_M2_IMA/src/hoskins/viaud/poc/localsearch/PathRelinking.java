@@ -104,6 +104,7 @@ public class PathRelinking implements LocalSearch {
 			tempSol.buildRepresentation();
 			
 			// calculate new of
+			tempSol.computeOvertime();
 			tempCost = tempSol.calculateOF();
 
 			// if the new solution IS FEASIBLE and more profitable then update best solution

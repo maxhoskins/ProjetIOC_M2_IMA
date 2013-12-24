@@ -39,6 +39,8 @@ public class Solution implements Cloneable{
 		this.x = x;
 		this.h = h;
 		this.s = buildRepresentation();
+		computeOvertime();
+		calculateOF();
 	}
 	
 	/**
@@ -53,6 +55,12 @@ public class Solution implements Cloneable{
 		this.of = of;
 	}
 	
+	/**
+	 * Change value in x[i][j]
+	 * @param i team index
+	 * @param j operation index
+	 * @param value
+	 */
 	public void setXValue(int i, int j, int value){
 		this.x[i][j] = value;
 	}
@@ -130,24 +138,24 @@ public class Solution implements Cloneable{
 	 * Calculate OF
 	 */
 	public double calculateOF(){
-		of = 0;
+		of = 0.0;
 		for(int i = 0; i < Instance.instance.getNe(); i++){
 			for(int j = 0; j < Instance.instance.getNo(); j++)
 				if(x[i][j] == 1)
 					of += Instance.instance.getP()[i][j];
-			if(h[i] > 0){
+			if(h[i] > 0)
 				//Need to convert the value of h[i] in hours before counting
 				of -= Math.ceil((double)h[i]/60.0) * Instance.instance.getC();
-			}
 		}
 		return of;
 	}
 	
 	/**
 	 * Build solution representation for local search method
+	 * @return solution representation
 	 */
 	public int[] buildRepresentation(){
-		int[] s = new int[Instance.instance.getNo()];
+		s = new int[Instance.instance.getNo()];
 		
 		for(int j = 0; j < Instance.instance.getNo(); j++)
 			for(int i = 0; i < Instance.instance.getNe(); i++)
@@ -159,18 +167,20 @@ public class Solution implements Cloneable{
 	
 	/**
 	 * Clone a solution
+	 * @return cloned Solutions
 	 */
 	public Solution clone(){
 		//Perform deep cloning of x matrix
-		int[][] y = x.clone();
+		int[][] y = this.x.clone();
 		for (int i = 0; i < y.length; i++) 
 		    y[i] = y[i].clone();
 		
-		return new Solution(y, h.clone(), of);
+		return new Solution(y, this.h.clone(), this.of);
 	}
 	
-	
-	
+	/**
+	 * Print solution information
+	 */
 	public void printSolution(){
 		System.out.println("Objective Function : "+of);
 		

@@ -66,8 +66,8 @@ public class Instance {
 		this.no = no;
 		this.t = t;
 		this.ne = ne;
-		this.l = l*60;
-		this.s = s*60;
+		this.l = l * 60;
+		this.s = s * 60;
 		this.c = c;
 		this.p = p;
 		this.a = buildAvailability(this.p);
@@ -157,5 +157,4 @@ public class Instance {
 					a[i][j] = 0;
 		return a;
 	}
-	
 }

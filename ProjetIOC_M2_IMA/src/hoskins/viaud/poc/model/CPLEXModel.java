@@ -13,6 +13,6 @@ public interface CPLEXModel {
 	/**
 	 * Solve the CPLEX model
 	 */
-	public void solveModel();
+	public void solve();
 
 }

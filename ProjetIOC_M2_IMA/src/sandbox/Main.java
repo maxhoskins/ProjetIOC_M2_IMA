@@ -3,10 +3,13 @@
  */
 package sandbox;
 
-import hoskins.viaud.poc.heuristic.Heuristic;
+import hoskins.viaud.poc.heuristic.ConstructiveHeuristic;
 import hoskins.viaud.poc.metaheuristic.MSEA;
 import hoskins.viaud.poc.metaheuristic.VNS;
+import hoskins.viaud.poc.model.AbruptModel;
 import hoskins.viaud.poc.model.BasicModel;
+import hoskins.viaud.poc.model.ContinuousModel;
+import hoskins.viaud.poc.model.SubGradientModel;
 import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 import hoskins.viaud.poc.utils.InstanceReader;
@@ -30,8 +33,8 @@ public class Main {
 		String instanceFolderPath = "./instances"; String resultFolderPath = "./resultsMSEA";
 		int l = 12; int s = 3; int c = 60;
 
-		//runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
-		runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
+		//runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
+		runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
 	}
 
 
@@ -39,25 +42,20 @@ public class Main {
 		//Instantiate Instance object associate to the current file
 		File file = new File(instancePath);
 
+		//Instantiate Instance object associate to the current file
 		InstanceReader.readFile(file,l,s,c);
 
-		//Solve the problem with heuristic method
-		Solution sol = Heuristic.performHeuristic();
-
-		//Solve the problem with meta algorithm
-		//sol = new VNS().performMetaHeuristic(sol, 200);
-		sol = new MSEA().performMetaHeuristic(sol, 200, 10);
-
-		System.out.println("MetaHeuristic : "+ sol.isFeasible()+ ","+sol.getOf());
-
+		//Solve the problem with heuristics & meta-heuristics
+		Solution sol = solvingMethods();
+		
 		if(!sol.isFeasible())
-			System.out.println("Solution failed <=> not feasible");
-
-		new BasicModel().solveModel();
+			System.out.print("Solution failed <=> not feasible");
 
 		//Write the solution in a .csv file
 		new SolutionWriter(sol, file.getName(), resultFolderPath);
 
+		System.out.println();
+		
 	}
 
 	public static void runAllInstances(int l, int s, int c, String instanceFolderPath, String resultFolderPath) throws Exception{
@@ -72,25 +70,51 @@ public class Main {
 			//Instantiate Instance object associate to the current file
 			InstanceReader.readFile(file,l,s,c);
 
-			//Solve the problem with heuristic method
-			Solution sol = Heuristic.performHeuristic();
-
-			//Solve the problem with meta algorithm
-			//sol = new VNS().performMetaHeuristic(sol, 200);
-			sol = new MSEA().performMetaHeuristic(sol, 20, 10);
-
-			System.out.println("MetaHeuristic : "+ sol.isFeasible()+ ","+sol.getOf());
-
-			if(!sol.isFeasible())
-				counter++;
+			//Solve the problem with heuristics & meta-heuristics
+			Solution sol = solvingMethods();
+			
+			if(!sol.isFeasible()){
+				System.out.print("Solution failed <=> not feasible");
+				counter ++;
+			}
 
 			//Write the solution in a .csv file
 			new SolutionWriter(sol, file.getName(), resultFolderPath);
+
+			System.out.println();
 
 		}
 
 		System.out.println(counter+"/100 instances fail");
 	}
 
+	public static Solution solvingMethods(){
+		
+		//Solve the problem with heuristic method
+		Solution sol = ConstructiveHeuristic.performHeuristic();
+		System.out.print("Heuristic => Feasibility : "+ sol.isFeasible()+ ", OF : "+sol.getOf()+"\n");
+
+		//Solve the problem with VNS algorithm
+		sol = new VNS().performMetaHeuristic(sol, 500, 3);
+		System.out.print("VNS => Feasibility : "+ sol.isFeasible()+ ", OF : "+sol.getOf()+"\n");
+
+		//Solve the problem with MSEA algorithm
+		sol = new MSEA().performMetaHeuristic(sol, 500, 10);
+		System.out.print("MSEA => Feasibility : "+ sol.isFeasible()+ ", OF : "+sol.getOf()+"\n");
+
+		return sol;
+	}
+
+	public static void upperBoundMethods(){
+		
+		//Abrupt relaxation
+		new AbruptModel().solve();
+		
+		//Continuous relaxation
+		new ContinuousModel().solve();
+		
+		//Sub-gradient algorithm
+		new SubGradientModel().solve();
+	}
 
 }

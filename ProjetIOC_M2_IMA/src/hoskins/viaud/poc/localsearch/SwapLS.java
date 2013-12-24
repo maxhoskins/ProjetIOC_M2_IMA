@@ -31,10 +31,11 @@ public class SwapLS implements LocalSearch {
 						s2 = s.clone();
 
 						//Change decision variables by swapping teams affected to operations
-						s2.getX()[s2.getS()[i]][i] = 0; s2.getX()[s2.getS()[j]][j] = 0;
-						s2.getX()[s2.getS()[j]][i] = 1; s2.getX()[s2.getS()[i]][j] = 1;
+						s2.setXValue(s2.getS()[i], i, 0); s2.setXValue(s2.getS()[j], j, 0);
+						s2.setXValue(s2.getS()[j], i, 1); s2.setXValue(s2.getS()[i], j, 1);
+						s2.buildRepresentation();
 						
-						//Change working time for each team
+						//Change overtime value in the new solution
 						s2.computeOvertime();
 						
 						//Check if the new solution is feasible

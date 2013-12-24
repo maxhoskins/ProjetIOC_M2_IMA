@@ -4,6 +4,7 @@
 package hoskins.viaud.poc.metaheuristic;
 
 import hoskins.viaud.poc.localsearch.ChangeOperationLS;
+import hoskins.viaud.poc.localsearch.ChangeOperationWithInfeasibilityLS;
 import hoskins.viaud.poc.localsearch.SwapLS;
 import hoskins.viaud.poc.localsearch.SwapNeighboringWithInfeasibilityLS;
 import hoskins.viaud.poc.localsearch.SwapWithInfeasibilityLS;
@@ -22,7 +23,7 @@ public class VNS implements MetaHeuristic {
 	@Override
 	public Solution performMetaHeuristic(Solution s, int nbIterations, Object ... params) {
 		//Initialize iterations and local serach counters
-		int i = 0, k;
+		int i = 0, k, nbLSMethod = (int)params[0];
 		
 		//Start VNS algorithm
 		do {
@@ -38,12 +39,12 @@ public class VNS implements MetaHeuristic {
 				Solution s3 = new SwapLS().performLocalSearch(s2);
 				
 				//Let s3 be the best solution if OF value of s3 is better than OF value of s, skip to next neighborhood otherwise
-				if(s3.getOf() > s.getOf())
+				if(s3.isFeasible() && s3.getOf() > s.getOf())
 					s = s3.clone();
 				else
 					k++;
 			}
-			while(k != 3);
+			while(k != nbLSMethod);
 			
 			//Go to next iteration
 			i++;
@@ -63,7 +64,7 @@ public class VNS implements MetaHeuristic {
 		Solution sol = s;
 		switch (k) {
 			case 0 : {
-				sol = new ChangeOperationLS().performLocalSearch(s);
+				sol = new ChangeOperationWithInfeasibilityLS().performLocalSearch(s);
 				break;
 			}
 			case 1 : {

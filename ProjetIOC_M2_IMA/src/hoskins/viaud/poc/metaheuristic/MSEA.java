@@ -36,7 +36,8 @@ public class MSEA implements MetaHeuristic {
 		Solution s1, s2;
 		
 		// add heuristic solution to pool
-		elitePool.addSolution(heuristicSol);
+		if(heuristicSol.isFeasible())
+			elitePool.addSolution(heuristicSol);
 		/*System.out.println("------------------");
 		System.out.println("Heuristic solution");
 		System.out.println("------------------");
@@ -97,11 +98,13 @@ public class MSEA implements MetaHeuristic {
 			s1.printSolution();*/
 		}
 		
+		/*
 		if(s1.getOf() > heuristicSol.getOf()){
 			System.out.println("------------------------------------------------------");
 			System.out.println("META IMPROVEMENT : "+(s1.getOf()-heuristicSol.getOf()));
 			System.out.println("------------------------------------------------------");
 		}
+		*/
 	
 		return s1;
 
