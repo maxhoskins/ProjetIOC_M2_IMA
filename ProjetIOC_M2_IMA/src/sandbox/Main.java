@@ -95,11 +95,11 @@ public class Main {
 		System.out.print("Heuristic => Feasibility : "+ sol.isFeasible()+ ", OF : "+sol.getOf()+"\n");
 
 		//Solve the problem with VNS algorithm
-		sol = new VNS().performMetaHeuristic(sol, 500, 3);
+		sol = new VNS().performMetaHeuristic(sol, 50, 3);
 		System.out.print("VNS => Feasibility : "+ sol.isFeasible()+ ", OF : "+sol.getOf()+"\n");
 
 		//Solve the problem with MSEA algorithm
-		sol = new MSEA().performMetaHeuristic(sol, 500, 10);
+		sol = new MSEA().performMetaHeuristic(sol, 50, 10);
 		System.out.print("MSEA => Feasibility : "+ sol.isFeasible()+ ", OF : "+sol.getOf()+"\n");
 
 		return sol;
