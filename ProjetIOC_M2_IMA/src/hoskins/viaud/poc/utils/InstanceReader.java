@@ -33,13 +33,13 @@ public class InstanceReader {
             switch (i) {
             case 0 :
             	//Get number of operations
-            	nbOperations = Integer.parseInt(line);
+            	nbOperations = Integer.parseInt(line.split(";")[0]);
             	t = new int[nbOperations];
             	i++;
             	break;
             case 1 :
             	//Get number of teams
-            	nbEquipes = Integer.parseInt(line);
+            	nbEquipes = Integer.parseInt(line.split(";")[0]);
             	p = new int[nbEquipes][nbOperations];
             	i++;
             	break;

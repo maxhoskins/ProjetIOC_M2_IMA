@@ -1,6 +1,3 @@
-/**
- * 
- */
 package hoskins.viaud.poc.model;
 
 import hoskins.viaud.poc.structure.Instance;
@@ -10,21 +7,18 @@ import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 /**
- * Run the basic mixed integer linear program
+ * Solve basic model
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
-public class BasicModel implements CPLEXModel {
+public class BasicModel extends AbstractModel {
 
-	/* (non-Javadoc)
-	 * @see hoskins.viaud.poc.model.CPLEXModel#solveModel()
-	 */
 	@Override
 	public void solve() {
 		//Run the Cplex solver
 		try {
-			//Create the IloCplex model
-			IloCplex cplex = new IloCplex();
+			
+			cplex = new IloCplex();
 
 			//Decision variable - x_ij
 			IloNumVar[][] x = new IloNumVar[Instance.instance.getNe()][Instance.instance.getNo()];
@@ -70,7 +64,7 @@ public class BasicModel implements CPLEXModel {
 				sumXijTj.addTerm(-60.0, h[i]);
 				cplex.addLe(sumXijTj, Instance.instance.getL());
 			}
-			
+
 			//Constraint - x_ij <= a_ij
 			for(int i = 0; i < Instance.instance.getNe(); i++)
 				for(int j = 0; j < Instance.instance.getNo(); j++)

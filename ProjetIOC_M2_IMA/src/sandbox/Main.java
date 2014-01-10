@@ -3,13 +3,12 @@
  */
 package sandbox;
 
+import hoskins.viaud.poc.bound.SubGradient;
 import hoskins.viaud.poc.heuristic.ConstructiveHeuristic;
 import hoskins.viaud.poc.metaheuristic.MSEA;
 import hoskins.viaud.poc.metaheuristic.VNS;
 import hoskins.viaud.poc.model.AbruptModel;
-import hoskins.viaud.poc.model.BasicModel;
 import hoskins.viaud.poc.model.ContinuousModel;
-import hoskins.viaud.poc.model.SubGradientModel;
 import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 import hoskins.viaud.poc.utils.InstanceReader;
@@ -53,6 +52,8 @@ public class Main {
 
 		//Write the solution in a .csv file
 		new SolutionWriter(sol, file.getName(), resultFolderPath);
+		
+		upperBoundMethods(sol);
 
 		System.out.println();
 		
@@ -81,6 +82,8 @@ public class Main {
 			//Write the solution in a .csv file
 			new SolutionWriter(sol, file.getName(), resultFolderPath);
 
+			upperBoundMethods(sol);
+			
 			System.out.println();
 
 		}
@@ -105,16 +108,16 @@ public class Main {
 		return sol;
 	}
 
-	public static void upperBoundMethods(){
+	public static void upperBoundMethods(Solution sol){
 		
 		//Abrupt relaxation
-		new AbruptModel().solve();
+		//new AbruptModel().solve();
 		
 		//Continuous relaxation
-		new ContinuousModel().solve();
+		//new ContinuousModel().solve();
 		
 		//Sub-gradient algorithm
-		new SubGradientModel().solve();
+		new SubGradient().computeBound(sol, 100);
 	}
 
 }

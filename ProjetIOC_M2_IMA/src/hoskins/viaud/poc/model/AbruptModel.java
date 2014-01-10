@@ -10,21 +10,18 @@ import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 /**
- * Run the abrupt mixed integer linear program
+ * Solve abrupt model (ie : with no respect for working time constraint)
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
-public class AbruptModel implements CPLEXModel {
+public class AbruptModel extends AbstractModel {
 
-	/* (non-Javadoc)
-	 * @see hoskins.viaud.poc.model.CPLEXModel#solveModel()
-	 */
 	@Override
 	public void solve() {
 		//Run the Cplex solver
 		try {
 			//Create the IloCplex model
-			IloCplex cplex = new IloCplex();
+			cplex = new IloCplex();
 
 			//Decision variable - x_ij
 			IloNumVar[][] x = new IloNumVar[Instance.instance.getNe()][Instance.instance.getNo()];

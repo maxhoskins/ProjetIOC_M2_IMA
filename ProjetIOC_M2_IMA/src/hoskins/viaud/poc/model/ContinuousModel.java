@@ -14,17 +14,14 @@ import ilog.cplex.IloCplex;
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
-public class ContinuousModel implements CPLEXModel {
+public class ContinuousModel extends AbstractModel {
 
-	/* (non-Javadoc)
-	 * @see hoskins.viaud.poc.model.CPLEXModel#solveModel()
-	 */
 	@Override
 	public void solve() {
 		//Run the Cplex solver
 		try {
 			//Create the IloCplex model
-			IloCplex cplex = new IloCplex();
+			cplex = new IloCplex();
 
 			//Decision variable - x_ij
 			IloNumVar[][] x = new IloNumVar[Instance.instance.getNe()][Instance.instance.getNo()];
@@ -78,7 +75,7 @@ public class ContinuousModel implements CPLEXModel {
 
 			//Solve the model
 			if (cplex.solve()){
-				System.out.println("O.F. (SPL) = " + cplex.getObjValue());
+				System.out.println("O.F. (Continuous Model) = " + cplex.getObjValue());
 				System.out.println("CPU = " + cplex.getCplexTime());
 			}
 			cplex.end();
