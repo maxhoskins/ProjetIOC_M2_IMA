@@ -3,7 +3,6 @@
  */
 package hoskins.viaud.poc.metaheuristic;
 
-import hoskins.viaud.poc.localsearch.ChangeOperationLS;
 import hoskins.viaud.poc.localsearch.ChangeOperationWithInfeasibilityLS;
 import hoskins.viaud.poc.localsearch.SwapLS;
 import hoskins.viaud.poc.localsearch.SwapNeighboringWithInfeasibilityLS;

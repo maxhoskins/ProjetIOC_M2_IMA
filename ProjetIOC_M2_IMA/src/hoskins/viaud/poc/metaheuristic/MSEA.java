@@ -9,7 +9,6 @@ import hoskins.viaud.poc.localsearch.PathRelinking;
 import hoskins.viaud.poc.metaheuristic.msea.ElitePool;
 import hoskins.viaud.poc.metaheuristic.msea.PostOptimization;
 import hoskins.viaud.poc.structure.Solution;
-import hoskins.viaud.poc.utils.SolutionWriter;
 
 /**
  * Run a Multi-Start Evolutionnary Algorithm (MSEA) with Path-Relinking as meta-heuristic for the problem

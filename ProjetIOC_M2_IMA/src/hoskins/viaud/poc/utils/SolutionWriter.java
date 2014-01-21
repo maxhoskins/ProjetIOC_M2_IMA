@@ -71,17 +71,18 @@ public class SolutionWriter {
 		//Write overtime for all teams
 		for(int i = 0; i < Instance.instance.getNe(); i++)
 			if(i < Instance.instance.getNe() - 1)
-				out.print(this.s.getH()[i] + ";");
+				out.print(Math.ceil(this.s.getH()[i]/60.0) + ";");
 			else
-				out.println(this.s.getH()[i]);
+				out.println(Math.ceil(this.s.getH()[i]/60.0));
 
 		//Write assignment between team and operation
 		for(int i = 0; i < Instance.instance.getNe(); i++){
 			for(int j = 0; j < Instance.instance.getNo(); j++){
-				if(j < Instance.instance.getNo() - 1)
-					out.print(this.s.getX()[i][j] + ";");
-				else
-					out.print(this.s.getX()[i][j]);
+				if(this.s.getX()[i][j] == 1)
+					if(j < Instance.instance.getNo() - 1)
+						out.print(j + 1 + ";");
+					else
+						out.print(j + 1);
 			}
 			if(i < Instance.instance.getNe() - 1)
 				out.print("\n");

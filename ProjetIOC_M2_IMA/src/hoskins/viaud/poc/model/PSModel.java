@@ -6,7 +6,7 @@ package hoskins.viaud.poc.model;
 import java.util.Iterator;
 
 import hoskins.viaud.poc.structure.Instance;
-import hoskins.viaud.poc.structure.SolutionColonne;
+import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
 import ilog.concert.IloLPMatrix;
@@ -24,11 +24,11 @@ public class PSModel extends AbstractModel {
 	 * @see hoskins.viaud.poc.model.AbstractModel#solve()
 	 */
 	@Override
-	public double solve(int[][] matriceV, double[] profit) {
+	public double solve(int[][] matriceV, double[] profit, int[] tableauEquipe) {
 		//Run the Cplex solver
 		try {
 			//Create the IloCplex model
-			cplex = new IloCplex();
+			IloCplex cplex = new IloCplex();
 
 			//Decision variable - x_p
 			IloNumVar[] x = new IloNumVar[matriceV[0].length];
@@ -57,19 +57,19 @@ public class PSModel extends AbstractModel {
 			for(int i = 0; i < Instance.instance.getNe(); i++){
 				IloLinearNumExpr sumP = cplex.linearNumExpr();
 				for(int p = 0; p < x.length; p++){
-					if(checkValidity(matriceV, p, i))
+					if(tableauEquipe[p] == i)
 						sumP.addTerm(1, x[p]);
 				}
 				cplex.addLe(sumP,1, "C2_"+i);
 			}
 
 			//Solve the model
-			cplex.exportModel("./tmp/debug.mps");
+			cplex.setOut(null);
 			double result = 0.0;
 			if (cplex.solve()){
 				
-				System.out.println("O.F. (Column Generation Primal model) = " + cplex.getObjValue());
-				System.out.println("CPU = " + cplex.getCplexTime());
+				//System.out.println("O.F. (Column Generation Primal model) = " + cplex.getObjValue());
+				//System.out.println("CPU = " + cplex.getCplexTime());
 
 				result = Math.round(cplex.getObjValue()*100.0)/100.0;					
 			}
@@ -115,9 +115,17 @@ public class PSModel extends AbstractModel {
 	}
 
 	@Override
-	public SolutionColonne solveGC(double[] pi, int team, int theta) {
+	public SolutionColumn solveGC(double[] pi, int team, int theta) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+
+	@Override
+	public double solve(int[][] matriceV, double[] profit) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

@@ -33,8 +33,8 @@ public class Main {
 		String instanceFolderPath = "./instances"; String resultFolderPath = "./resultsMSEA";
 		int l = 12; int s = 3; int c = 60;
 
-		runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
-		//runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
+		//runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
+		runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
 	}
 
 
@@ -120,6 +120,8 @@ public class Main {
 		
 		//Sub-gradient algorithm
 		new SubGradient().computeBound(sol, 100);
+		
+		new ColumnGeneration().computeBound(sol, 10);
 	}
 
 }

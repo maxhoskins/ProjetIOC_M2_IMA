@@ -4,7 +4,6 @@
 package hoskins.viaud.poc.heuristic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import hoskins.viaud.poc.localsearch.ChangeOperationLS;
 import hoskins.viaud.poc.localsearch.SwapLS;

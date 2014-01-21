@@ -7,7 +7,6 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Elite Pool structure

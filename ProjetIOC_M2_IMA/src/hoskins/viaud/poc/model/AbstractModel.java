@@ -3,7 +3,7 @@
  */
 package hoskins.viaud.poc.model;
 
-import hoskins.viaud.poc.structure.SolutionColonne;
+import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.cplex.IloCplex;
 
 /**
@@ -21,6 +21,17 @@ public abstract class AbstractModel {
 	
 	public abstract double[] solveDual(int[][] matriceV, double[] profit);
 
-	public abstract SolutionColonne solveGC(double[] pi, int team, int theta);
+	public abstract SolutionColumn solveGC(double[] pi, int team, int theta);
+
+	public double solve(int[][] matriceV, double[] profit, int[] tableauEquipe) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public double[] solveDual(int[][] matriceV, double[] profit,
+			int[] tableauEquipe) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

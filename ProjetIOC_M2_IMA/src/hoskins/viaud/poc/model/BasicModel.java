@@ -1,7 +1,7 @@
 package hoskins.viaud.poc.model;
 
 import hoskins.viaud.poc.structure.Instance;
-import hoskins.viaud.poc.structure.SolutionColonne;
+import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
@@ -96,7 +96,7 @@ public class BasicModel extends AbstractModel {
 	}
 
 	@Override
-	public SolutionColonne solveGC(double[] pi, int team, int theta) {
+	public SolutionColumn solveGC(double[] pi, int team, int theta) {
 		// TODO Auto-generated method stub
 		return null;
 	}

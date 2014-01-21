@@ -1,11 +1,11 @@
 package hoskins.viaud.poc.structure;
 
-public class SolutionColonne {
+public class SolutionColumn {
 
 	private int[] A;
 	private double of;
 	
-	public SolutionColonne(int[] a, double of) {
+	public SolutionColumn(int[] a, double of) {
 		super();
 		A = a;
 		this.of = of;

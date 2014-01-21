@@ -6,7 +6,7 @@ package hoskins.viaud.poc.model;
 import java.util.ArrayList;
 
 import hoskins.viaud.poc.structure.Instance;
-import hoskins.viaud.poc.structure.SolutionColonne;
+import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
 import ilog.concert.IloLinearNumExpr;
@@ -32,11 +32,11 @@ public class CGModel extends AbstractModel {
 	 * @see hoskins.viaud.poc.model.AbstractModel#solve()
 	 */
 	@Override
-	public SolutionColonne solveGC(double[] pi, int team, int theta) {
+	public SolutionColumn solveGC(double[] pi, int team, int theta) {
 		//Run the Cplex solver
 		try {
 			//Create the IloCplex model
-			cplex = new IloCplex();
+			IloCplex cplex = new IloCplex();
 
 			//Decision variable - u_j
 			IloIntVar[] u = new IloIntVar[Instance.instance.getNo()];
@@ -65,8 +65,10 @@ public class CGModel extends AbstractModel {
 			cplex.addLe(sumU, Instance.instance.getL() + theta);
 			
 			//Solve the model
-			SolutionColonne sc = null;
+			SolutionColumn sc = null;
+			
 			cplex.setOut(null);
+			
 			if (cplex.solve()){
 				//System.out.println("O.F. (Column Generation) = " + cplex.getObjValue());
 				//System.out.println("CPU = " + cplex.getCplexTime());
@@ -75,7 +77,7 @@ public class CGModel extends AbstractModel {
 				for(int j = 0; j < Instance.instance.getNo(); j++)
 					result[j] = (int) cplex.getValue(u[j]);
 				
-				sc = new SolutionColonne(result, cplex.getObjValue());
+				sc = new SolutionColumn(result, cplex.getObjValue());
 			}
 			cplex.end();
 			

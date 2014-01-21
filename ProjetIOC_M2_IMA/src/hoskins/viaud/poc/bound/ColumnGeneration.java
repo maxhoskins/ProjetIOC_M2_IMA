@@ -5,14 +5,13 @@ package hoskins.viaud.poc.bound;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 
 import hoskins.viaud.poc.model.CGModel;
 import hoskins.viaud.poc.model.PSModel;
 import hoskins.viaud.poc.model.RPSModel;
 import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
-import hoskins.viaud.poc.structure.SolutionColonne;
+import hoskins.viaud.poc.structure.SolutionColumn;
 
 /**
  * Column generation algorithm
@@ -21,35 +20,37 @@ import hoskins.viaud.poc.structure.SolutionColonne;
  */
 public class ColumnGeneration implements IBound {
 
-
+	/**
+	 * Column generation algorithm
+	 */
 	public void computeBound(Solution s, int nbIterations) {
-		SolutionColonne bestColumn = null;
-		double res = 0;
+		//Instantiate best column to add and result found
+		SolutionColumn bestColumn = null;
+		double result = 0;
 
-		//Crée la matrice V suivant les résultats de l'heuristique en paramètre
-		int[][] matriceV = genereMatriceV(s);
+		//Create V Matrix from solution s
+		int[][] matriceV = generateMatrix(s);
 
-		//Crée un tableau avec les profits des différents lots en paramètre
-		double[] tableauProfit = genereTableauProfit(matriceV);
+		//Create a table with profit value for each profile 
+		double[] tableauProfit = generateProfit(matriceV);
 
-		//Algorithme de génération de colonnes
+		//Create a table with number of team assign to each selected profile
+		int[] tableauEquipe = generateTeam();
+
+		//Column generation algorithm
 		do{		
-			matriceV = refineMatriceV(matriceV);
-			//Résoud PS(V)
-			System.out.println("Start PS");
-			res = new PSModel().solve(matriceV, tableauProfit);
+			//Solve PS(V)
+			result = new PSModel().solve(matriceV, tableauProfit, tableauEquipe);
 
-			//Crée le vecteur pi en résolvant le dual de PS(V)
-			System.out.println("Start RPS");
-			double[] pi = new RPSModel().solveDual(matriceV, tableauProfit);
+			//Create pi vector by solving dual problem of PS(V)
+			double[] pi = new RPSModel().solveDual(matriceV, tableauProfit, tableauEquipe);
 
-
-			//Résoud CG suivant pi et renvoie une nouvelle solution en énnumérant toutes les combinaison équipe/ dépassement heures sup
-			bestColumn = new SolutionColonne(null,-1);
+			//Solve CG sub problem and keep best column found
+			bestColumn = new SolutionColumn(null,-1);
 			int bestTeam = -1;
 			for(int e = 0; e < Instance.instance.getNe(); e++){
 				for(int theta = 0; theta < Math.round(Instance.instance.getS()/60); theta++){
-					SolutionColonne sc = new CGModel().solveGC(pi, e, theta);
+					SolutionColumn sc = new CGModel().solveGC(pi, e, theta);
 					if(sc.getOf() > bestColumn.getOf()){
 						bestColumn = sc;
 						bestTeam = e;
@@ -57,33 +58,30 @@ public class ColumnGeneration implements IBound {
 				}
 			}			
 
-			//Fusionne V avec la nouvelle colonne A
-			matriceV = fusion(matriceV,bestColumn.getA());
+			//Merge V and new column A
+			matriceV = merge(matriceV,bestColumn.getA());
 
-			//Recalcule le profit de chaque lot d'après la nouvelle matrice V
-			tableauProfit = miseAJourTableauProfit(matriceV, tableauProfit, bestTeam);
+			//Update profit value and number of team for each profile
+			tableauProfit = updateProfit(matriceV, tableauProfit, bestTeam);
+			
+			tableauEquipe = updateTeam(tableauEquipe, bestTeam);
 		}
+		while(bestColumn.getOf() < 0);
 
-		//Condition d'arrêt
-		while(bestColumn.getOf() > 0);
-
-		System.out.println("-----------------------------------------------------------------\n");
-		System.out.println("-----------------------------------------------------------------\n");
-		System.out.print("Column Generation Result : "+Math.round(res*100.0)/100.0+"\n");
-		System.out.println("-----------------------------------------------------------------\n");
-		System.out.println("-----------------------------------------------------------------\n");
-		System.out.println();
+		System.out.print("-----------------------------------------------------------------\n");
+		System.out.print("Column Generation Bound : "+Math.round(result*100.0)/100.0 +"\n");
+		System.out.print("-----------------------------------------------------------------\n");
 
 	}
 
 
 
 	/**
-	 * Crée la matrice V suivant la liste des profils en paramètre
-	 * @param listeLot
-	 * @return matriceV
+	 * Create matrix from solution in parameter
+	 * @param s solution
+	 * @return matrix
 	 */
-	public static int[][] genereMatriceV(Solution s){	
+	public static int[][] generateMatrix(Solution s){	
 		int[][] matriceV = new int[Instance.instance.getNo()][Instance.instance.getNe()];
 		for(int j = 0; j < Instance.instance.getNo(); j++)
 			for(int i = 0; i < Instance.instance.getNe(); i++)
@@ -95,11 +93,23 @@ public class ColumnGeneration implements IBound {
 	}
 
 	/**
-	 * Crée un tableau de profit de chaque profil
-	 * @param listeLot
-	 * @return tableauDeProfit
+	 * Generate a table of which team perform which profile
+	 * @return table of team
 	 */
-	public static double[] genereTableauProfit(int[][] matriceV){
+	public static int[] generateTeam(){
+		int[] t = new int[Instance.instance.getNe()];
+		for(int i = 0; i < Instance.instance.getNe(); i++){
+			t[i] = i;
+		}
+		return t;
+	}
+
+	/**
+	 * Create a table of profit for each profile
+	 * @param matrix
+	 * @return table of profit
+	 */
+	public static double[] generateProfit(int[][] matriceV){
 		double[] t = new double[matriceV[0].length];
 		for(int i = 0; i < t.length; i++){
 			double profit = 0.0;
@@ -117,15 +127,15 @@ public class ColumnGeneration implements IBound {
 	}
 
 	/**
-	 * Fusionne la matrice V avec la nouvelle colonne A
-	 * @param V, matrice
-	 * @param A, nouvelle colonne
-	 * @return matriceV, agrégation de V et A
+	 * Merge matrix V and column A
+	 * @param V, matrix
+	 * @param A, new column
+	 * @return merged matrix
 	 */
-	public static int[][] fusion(int[][] V, int[] A){
+	public static int[][] merge(int[][] V, int[] A){
 		int[][] matriceV = new int[V.length][V[0].length+1];
-		for(int i=0;i<matriceV.length;i++)
-			for(int j=0;j<matriceV[0].length;j++)
+		for(int i = 0; i < matriceV.length; i++)
+			for(int j = 0; j < matriceV[0].length; j++)
 				if(j == matriceV[0].length-1)
 					matriceV[i][j] = A[i];
 				else
@@ -134,18 +144,19 @@ public class ColumnGeneration implements IBound {
 	}
 
 	/**
-	 * Mise à jour du tableau de profit
-	 * @param listeLot
+	 * Update profit
+	 * @param matrix
+	 * @param current profit table
+	 * @param team new team to add
 	 * @return tableauDeProfit
 	 */
-	public static double[] miseAJourTableauProfit(int[][] matriceV,double[] currentT, int team){
+	public static double[] updateProfit(int[][] matriceV,double[] currentT, int team){
 		double[] t = new double[matriceV[0].length];
 		for(int i = 0; i < t.length; i++){
 			if(i < currentT.length)
 				t[i] = currentT[i];
 			else{
-				double profit = 0.0;
-				double nbH = 0.0;
+				int profit = 0, nbH = 0;
 				for(int j = 0; j < Instance.instance.getNo(); j++){
 					if(matriceV[j][team] == 1){
 						profit += Instance.instance.getP()[team][j];
@@ -159,6 +170,23 @@ public class ColumnGeneration implements IBound {
 		return t;
 	}
 	
+	/**
+	 * Update team
+	 * @param tableauEquipe, team/profile association
+	 * @param bestTeam newTeam
+	 * @return updated tableauEquipe
+	 */
+	private int[] updateTeam(int[] tableauEquipe, int bestTeam){
+		int[] t = new int[tableauEquipe.length + 1];
+		
+		for(int i = 0; i < tableauEquipe.length; i++)
+			t[i] = tableauEquipe[i];
+		
+		t[tableauEquipe.length] = bestTeam;
+		
+		return t;
+	}
+
 	private int[][] refineMatriceV(int[][]matriceV){
 		ArrayList<Integer> es = new ArrayList<Integer>(Collections.nCopies(matriceV[0].length, 0));
 
@@ -170,13 +198,13 @@ public class ColumnGeneration implements IBound {
 					es.set(j, 1);
 			}
 		}
-		
+
 		int nbCol = 0;
 		for(int n : es)
 			nbCol += n;
-		
+
 		int[][] result = new int[Instance.instance.getNo()][nbCol];
-		
+
 		for(int i = 0; i < es.size(); i++){
 			if(es.get(i) == 1){
 				for(int j = 0; j < Instance.instance.getNo(); j++)
@@ -188,7 +216,7 @@ public class ColumnGeneration implements IBound {
 		}
 		return result;
 	}
-	
+
 	/**
 	 * Checks if at least one work profile can be affected to a team
 	 * @param matriceV matrix of columns
@@ -210,11 +238,6 @@ public class ColumnGeneration implements IBound {
 				es.add(e);
 		}
 		return es;
-	}
-
-	@Override
-	public void computeBound() {
-
 	}
 
 }

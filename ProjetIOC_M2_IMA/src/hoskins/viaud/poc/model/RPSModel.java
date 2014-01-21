@@ -6,7 +6,7 @@ package hoskins.viaud.poc.model;
 import javax.swing.text.html.HTMLDocument.Iterator;
 
 import hoskins.viaud.poc.structure.Instance;
-import hoskins.viaud.poc.structure.SolutionColonne;
+import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.concert.IloException;
 import ilog.concert.IloLPMatrix;
 import ilog.concert.IloLinearNumExpr;
@@ -32,11 +32,11 @@ public class RPSModel extends AbstractModel {
 	 * @see hoskins.viaud.poc.model.AbstractModel#solve()
 	 */
 	@Override
-	public double[] solveDual(int[][] matriceV, double[] profit) {
+	public double[] solveDual(int[][] matriceV, double[] profit, int[] tableauEquipe) {
 		//Run the Cplex solver
 		try {
 			//Create the IloCplex model
-			cplex = new IloCplex();
+			IloCplex cplex = new IloCplex();
 
 			//Decision variable - mu_j
 			IloNumVar[] mu = new IloNumVar[Instance.instance.getNo()];
@@ -65,19 +65,21 @@ public class RPSModel extends AbstractModel {
 				for(int j = 0; j < mu.length; j++){
 					sumP.addTerm(matriceV[j][p], mu[j]);
 				}
-				for(int e = 0; e < pi.length; e++){
-					if(checkValidity(matriceV, p, e))
-						sumP.addTerm(1.0, pi[e]);
+				for(int i = 0; i < pi.length; i++){
+					if(tableauEquipe[p] == i)
+						sumP.addTerm(1.0, pi[i]);
 				}
 				cplex.addGe(sumP, profit[p]);
 			}
 
 			//Solve the model
 			//first j values are the mu's and the rest are the pi's
+			cplex.setOut(null);
+			
 			double[] result = new double[Instance.instance.getNo()+Instance.instance.getNe()];
 			if (cplex.solve()){
-				System.out.println("O.F. (Column Generation Dual model) = " + cplex.getObjValue());
-				System.out.println("CPU = " + cplex.getCplexTime());
+				//System.out.println("O.F. (Column Generation Dual model) = " + cplex.getObjValue());
+				//System.out.println("CPU = " + cplex.getCplexTime());
 				
 				for(int j = 0; j < Instance.instance.getNo(); j++){
 					result[j] = cplex.getValue(mu[j]);
@@ -122,7 +124,13 @@ public class RPSModel extends AbstractModel {
 	}
 
 	@Override
-	public SolutionColonne solveGC(double[] pi, int team, int theta) {
+	public SolutionColumn solveGC(double[] pi, int team, int theta) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public double[] solveDual(int[][] matriceV, double[] profit) {
 		// TODO Auto-generated method stub
 		return null;
 	}

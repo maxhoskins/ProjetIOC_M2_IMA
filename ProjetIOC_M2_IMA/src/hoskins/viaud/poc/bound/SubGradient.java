@@ -13,8 +13,8 @@ import hoskins.viaud.poc.structure.Solution;
  */
 public class SubGradient implements IBound {
 
-	/* (non-Javadoc)
-	 * @see hoskins.viaud.poc.bound.BoundInterface#computeBound()
+	/**
+	 * Sub gradient algorithm
 	 */
 	@Override
 	public void computeBound(Solution s, int nbIterations) {
@@ -139,9 +139,4 @@ public class SubGradient implements IBound {
 		return res;
 	}
 
-	@Override
-	public void computeBound() {
-		// TODO Auto-generated method stub
-		
-	}
 }
