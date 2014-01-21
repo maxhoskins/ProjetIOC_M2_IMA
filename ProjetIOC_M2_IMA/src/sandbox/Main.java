@@ -3,6 +3,7 @@
  */
 package sandbox;
 
+import hoskins.viaud.poc.bound.ColumnGeneration;
 import hoskins.viaud.poc.bound.SubGradient;
 import hoskins.viaud.poc.heuristic.ConstructiveHeuristic;
 import hoskins.viaud.poc.metaheuristic.MSEA;
@@ -32,8 +33,8 @@ public class Main {
 		String instanceFolderPath = "./instances"; String resultFolderPath = "./resultsMSEA";
 		int l = 12; int s = 3; int c = 60;
 
-		//runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
-		runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
+		runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);
+		//runAllInstances(l, s, c, instanceFolderPath, resultFolderPath);
 	}
 
 
@@ -53,7 +54,8 @@ public class Main {
 		//Write the solution in a .csv file
 		new SolutionWriter(sol, file.getName(), resultFolderPath);
 		
-		upperBoundMethods(sol);
+		new ColumnGeneration().computeBound(sol, 10);
+		//upperBoundMethods(sol);
 
 		System.out.println();
 		

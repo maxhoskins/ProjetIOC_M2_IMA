@@ -1,6 +1,7 @@
 package hoskins.viaud.poc.model;
 
 import hoskins.viaud.poc.structure.Instance;
+import hoskins.viaud.poc.structure.SolutionColonne;
 import ilog.concert.IloException;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
@@ -80,6 +81,24 @@ public class BasicModel extends AbstractModel {
 		} catch (IloException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public double solve(int[][] matriceV, double[] profit) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double[] solveDual(int[][] matriceV, double[] profit) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public SolutionColonne solveGC(double[] pi, int team, int theta) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
