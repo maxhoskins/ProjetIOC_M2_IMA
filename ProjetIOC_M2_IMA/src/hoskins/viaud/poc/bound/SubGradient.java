@@ -19,7 +19,7 @@ public class SubGradient implements IBound {
 	 * @param nbIterations number of iterations
 	 */
 	@Override
-	public void computeBound(Solution s, int nbIterations) {
+	public double computeBound(Solution s, int nbIterations) {
 		//Instantiate iterations counter, lower bound value and Lagrange multipliers vector
 		int k = 0;
 		double result = Double.MAX_VALUE, lb = s.getOf();
@@ -52,10 +52,8 @@ public class SubGradient implements IBound {
 			//Next iteration
 			k++;
 		}
-		
-		System.out.print("-----------------------------------------------------------------\n");
-		System.out.print("Lagrange Upper Bound : "+Math.round(result*100.0)/100.0 +"\n");
-		System.out.print("-----------------------------------------------------------------\n");
+
+		return Math.round(result*100.0)/100.0;
 	}
 
 	/**

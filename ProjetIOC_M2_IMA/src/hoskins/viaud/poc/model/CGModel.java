@@ -49,7 +49,7 @@ public class CGModel extends AbstractModel {
 			for(int j = 0; j < u.length; j++){
 				sumU.addTerm(Instance.instance.getT()[j], u[j]);
 			}
-			cplex.addLe(sumU, Instance.instance.getL() + theta);
+			cplex.addLe(sumU, Instance.instance.getL() + theta * 60);
 			
 			//Solve the model
 			SolutionColumn sc = null;

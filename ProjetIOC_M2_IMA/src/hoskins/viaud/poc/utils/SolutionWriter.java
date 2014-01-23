@@ -56,13 +56,32 @@ public class SolutionWriter {
 	 */
 	public SolutionWriter(Solution s, String sourceFileName, String folderPath) throws Exception{
 		if (!new File(folderPath).exists()) {
-			throw new Exception("Destination folder does not exist");
+			new File(folderPath).mkdir();
 		}
 		this.s = s;
 		this.sourceFileName = sourceFileName;
 		this.folderPath = folderPath;
 		openFile(createFileName());
 		buildResult();
+		closeFile();
+	}
+	
+	/**
+	 * Create a upper bound result file
+	 * @param value upper bound value
+	 * @param sourceFileName instance file name
+	 * @param folderPath folder to store result file
+	 * @throws IOException 
+	 * @throws Exception
+	 */
+	public SolutionWriter(double value, String sourceFileName, String folderPath) throws IOException{
+		if (!new File(folderPath).exists()) {
+			new File(folderPath).mkdir();
+		}
+		this.sourceFileName = sourceFileName;
+		this.folderPath = folderPath;
+		openFile(createFileName());
+		out.println(value);
 		closeFile();
 	}
 

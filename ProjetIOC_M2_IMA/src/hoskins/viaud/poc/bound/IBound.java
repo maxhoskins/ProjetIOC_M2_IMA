@@ -12,6 +12,6 @@ import hoskins.viaud.poc.structure.Solution;
  */
 public interface IBound {
 
-	void computeBound(Solution s, int nbIterations);
+	double computeBound(Solution s, int nbIterations);
 	
 }

@@ -31,7 +31,7 @@ public class PSModel extends AbstractModel {
 			//Decision variable - x_p
 			IloNumVar[] x = new IloNumVar[matrix[0].length];
 			for(int p = 0; p < x.length; p++)
-				x[p] = cplex.numVar(0,Double.MAX_VALUE,"x_"+p);
+				x[p] = cplex.numVar(0,Double.MAX_VALUE);
 
 			//Create objective function
 			IloLinearNumExpr of = cplex.linearNumExpr();
@@ -48,7 +48,7 @@ public class PSModel extends AbstractModel {
 				for(int p = 0; p < x.length; p++){
 					sumP.addTerm(matrix[j][p], x[p]);
 				}
-				cplex.addEq(sumP, 1, "C1_"+j);
+				cplex.addEq(sumP, 1);
 			}
 
 			//Constraint - x_p <= 1
@@ -58,7 +58,7 @@ public class PSModel extends AbstractModel {
 					if(teamTable[p] == i)
 						sumP.addTerm(1, x[p]);
 				}
-				cplex.addLe(sumP,1, "C2_"+i);
+				cplex.addLe(sumP,1);
 			}
 
 			//Solve the model

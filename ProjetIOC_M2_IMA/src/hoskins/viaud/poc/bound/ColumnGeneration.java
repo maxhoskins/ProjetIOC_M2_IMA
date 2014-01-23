@@ -23,11 +23,11 @@ public class ColumnGeneration implements IBound {
 	/**
 	 * Column generation algorithm
 	 */
-	public void computeBound(Solution s, int nbIterations) {
+	public double computeBound(Solution s, int nbIterations) {
 		//Instantiate best column to add and result found
 		SolutionColumn bestColumn = null;
 		double result = 0;
-
+		
 		//Create V Matrix from solution s
 		int[][] matrix = generateMatrix(s);
 
@@ -49,15 +49,22 @@ public class ColumnGeneration implements IBound {
 			bestColumn = new SolutionColumn(null,-1);
 			int bestTeam = -1;
 			for(int e = 0; e < Instance.instance.getNe(); e++){
-				for(int theta = 0; theta < (int) Math.ceil(Instance.instance.getS()/60); theta++){
+				for(int theta = 0; theta < Instance.instance.getS()/60 + 1; theta++){
 					SolutionColumn sc = new CGModel().solveGC(pi, e, theta);
 					if(sc.getProfit() > bestColumn.getProfit()){
 						bestColumn = sc;
 						bestTeam = e;
 					}
 				}
-			}			
-
+			}
+			
+			/*
+			System.out.println(bestColumn.getProfit());
+			System.out.println(bestTeam);
+			for(int i =0; i < bestColumn.getA().length; i++)
+				System.out.print(bestColumn.getA()[i]+" ");
+			*/
+			
 			//Merge matrix and new column
 			matrix = merge(matrix,bestColumn.getA());
 
@@ -66,12 +73,11 @@ public class ColumnGeneration implements IBound {
 			
 			teamTable = updateTeam(teamTable, bestTeam);
 		}
-		while(bestColumn.getProfit() < 0);
+		while(bestColumn.getProfit() > 0);
+		
+		result = new PSModel().solve(matrix, profitTable, teamTable);
 
-		System.out.print("-----------------------------------------------------------------\n");
-		System.out.print("Column Generation Bound : "+Math.round(result*100.0)/100.0 +"\n");
-		System.out.print("-----------------------------------------------------------------\n");
-
+		return Math.round(result*100.0)/100.0 ;
 	}
 
 	/**
@@ -111,14 +117,14 @@ public class ColumnGeneration implements IBound {
 		double[] t = new double[matrix[0].length];
 		for(int i = 0; i < t.length; i++){
 			double profit = 0.0;
-			double nbH = 0.0;
+			int nbH = 0;
 			for(int j = 0; j < Instance.instance.getNo(); j++){
 				if(matrix[j][i] == 1){
 					profit += Instance.instance.getP()[i][j];
 					nbH += Instance.instance.getT()[j];
 				}
 			}
-			profit -= Instance.instance.getC() * (Math.max(0.0, Math.ceil(nbH/60.0) - Instance.instance.getL()));
+			profit -= Instance.instance.getC() * Math.ceil(Math.max(0, nbH - Instance.instance.getL())/60.0);
 			t[i] = profit;		
 		}
 		return t;
@@ -134,7 +140,7 @@ public class ColumnGeneration implements IBound {
 		int[][] mergedMatrix = new int[matrix.length][matrix[0].length+1];
 		for(int i = 0; i < mergedMatrix.length; i++)
 			for(int j = 0; j < mergedMatrix[0].length; j++)
-				if(j == mergedMatrix[0].length-1)
+				if(j == mergedMatrix[0].length - 1)
 					mergedMatrix[i][j] = a[i];
 				else
 					mergedMatrix[i][j] = matrix[i][j];
@@ -154,14 +160,15 @@ public class ColumnGeneration implements IBound {
 			if(i < currentProfitTable.length)
 				t[i] = currentProfitTable[i];
 			else{
-				int profit = 0, nbH = 0;
+				double profit = 0;
+				int nbH = 0;
 				for(int j = 0; j < Instance.instance.getNo(); j++){
-					if(matrix[j][team] == 1){
+					if(matrix[j][i] == 1){
 						profit += Instance.instance.getP()[team][j];
 						nbH += Instance.instance.getT()[j];
 					}
 				}
-				profit -= Instance.instance.getC() * (Math.max(0.0, Math.ceil(nbH/60.0) - Instance.instance.getL()));
+				profit -= Instance.instance.getC() * Math.ceil(Math.max(0, nbH - Instance.instance.getL())/60.0);
 				t[i] = profit;	
 			}
 		}
