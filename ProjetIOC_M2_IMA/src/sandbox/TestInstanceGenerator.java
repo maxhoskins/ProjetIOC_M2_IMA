@@ -22,12 +22,10 @@ public class TestInstanceGenerator {
 		long seed = 1000;
 		
 		Random rGen = new Random(seed);
-		int nbOp, nbEq;
-		for(int i = 0; i < 10; i++){
-			nbOp = 150;
-			nbEq = 45;
+		int nbOp = 50, nbEq = 15;
+		for(int i = 0; i < 100; i++){
 			try {
-				new InstanceGenerator(nbEq, nbOp, "./instancesBig");
+				new InstanceGenerator(nbEq, nbOp, "./instances");
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
