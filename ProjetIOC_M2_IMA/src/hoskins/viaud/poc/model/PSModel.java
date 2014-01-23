@@ -3,18 +3,16 @@
  */
 package hoskins.viaud.poc.model;
 
-import java.util.Iterator;
-
 import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.concert.IloException;
-import ilog.concert.IloIntVar;
-import ilog.concert.IloLPMatrix;
 import ilog.concert.IloLinearNumExpr;
 import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 /**
+ * Run the PS model with Cplex
+ * Maximize the profit by affecting each operation to one profile only and force a team to perform only one profile
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -24,14 +22,14 @@ public class PSModel extends AbstractModel {
 	 * @see hoskins.viaud.poc.model.AbstractModel#solve()
 	 */
 	@Override
-	public double solve(int[][] matriceV, double[] profit, int[] tableauEquipe) {
+	public double solve(int[][] matrix, double[] profitTable, int[] teamTable) {
 		//Run the Cplex solver
 		try {
 			//Create the IloCplex model
 			IloCplex cplex = new IloCplex();
 
 			//Decision variable - x_p
-			IloNumVar[] x = new IloNumVar[matriceV[0].length];
+			IloNumVar[] x = new IloNumVar[matrix[0].length];
 			for(int p = 0; p < x.length; p++)
 				x[p] = cplex.numVar(0,Double.MAX_VALUE,"x_"+p);
 
@@ -40,7 +38,7 @@ public class PSModel extends AbstractModel {
 
 			//SUM[w_p.x_p]
 			for(int p = 0; p < x.length; p++)
-				of.addTerm(profit[p], x[p]);
+				of.addTerm(profitTable[p], x[p]);
 
 			cplex.addMaximize(of);
 
@@ -48,7 +46,7 @@ public class PSModel extends AbstractModel {
 			for(int j = 0; j < Instance.instance.getNo(); j++){
 				IloLinearNumExpr sumP = cplex.linearNumExpr();
 				for(int p = 0; p < x.length; p++){
-					sumP.addTerm(matriceV[j][p], x[p]);
+					sumP.addTerm(matrix[j][p], x[p]);
 				}
 				cplex.addEq(sumP, 1, "C1_"+j);
 			}
@@ -57,7 +55,7 @@ public class PSModel extends AbstractModel {
 			for(int i = 0; i < Instance.instance.getNe(); i++){
 				IloLinearNumExpr sumP = cplex.linearNumExpr();
 				for(int p = 0; p < x.length; p++){
-					if(tableauEquipe[p] == i)
+					if(teamTable[p] == i)
 						sumP.addTerm(1, x[p]);
 				}
 				cplex.addLe(sumP,1, "C2_"+i);
@@ -83,49 +81,14 @@ public class PSModel extends AbstractModel {
 		return 0;
 	}
 
-
-
-	/**
-	 * Checks if a work profile can be affected to a team
-	 * @param matriceV matrix of columns
-	 * @param column id of profile
-	 * @param team id of team
-	 * @return true if work profile can be performed by team, false otherwise
-	 */
-	private boolean checkValidity(int[][] matriceV, int column, int team){
-		boolean result = true;
-		int o = -1;	
-		while(++o < matriceV.length && result){
-			if(matriceV[o][column] == 1)
-				if(Instance.instance.getA()[team][o] == 0)
-					result = false;
-		}
-		return result;
-	}
-
-	@Override
-	public void solve() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public double[] solveDual(int[][] matriceV, double[] profit) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public SolutionColumn solveGC(double[] pi, int team, int theta) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-
 	@Override
-	public double solve(int[][] matriceV, double[] profit) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double[] solveDual(int[][] matrix, double[] profitTable, int[] teamTable) {
+		return null;
 	}
 
 }

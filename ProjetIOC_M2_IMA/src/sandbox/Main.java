@@ -15,18 +15,20 @@ import hoskins.viaud.poc.utils.SolutionWriter;
 import java.io.File;
 
 /**
+ * Bac à sable
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
 public class Main {
 
 	/**
+	 * Main access point to the problem solver
 	 * @param args
 	 * @throws Exception 
 	 */
 	public static void main(String[] args) throws Exception {
 		//Folder where instance files are located and parameters of the problem in hour
-		String instanceFolderPath = "./instances"; String resultFolderPath = "./resultsMSEA";
+		String instanceFolderPath = "./instances"; String resultFolderPath = "./results";
 		int l = 12; int s = 3; int c = 60;
 
 		//runOneInstance(l, s, c, "./instances/I0O50E15R1.csv", resultFolderPath);

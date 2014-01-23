@@ -15,13 +15,14 @@ public class SubGradient implements IBound {
 
 	/**
 	 * Sub gradient algorithm
+	 * @param s solution
+	 * @param nbIterations number of iterations
 	 */
 	@Override
 	public void computeBound(Solution s, int nbIterations) {
 		//Instantiate iterations counter, lower bound value and Lagrange multipliers vector
 		int k = 0;
-		double result = Double.MAX_VALUE;
-		double lb = s.getOf();
+		double result = Double.MAX_VALUE, lb = s.getOf();
 		double[] pi = new double[Instance.instance.getNe()];
 		for(int i = 0; i < pi.length; i++)
 			pi[i] = 0;
@@ -48,6 +49,7 @@ public class SubGradient implements IBound {
 				pi[i] += p*gamma[i];
 			}
 			
+			//Next iteration
 			k++;
 		}
 		
@@ -57,7 +59,7 @@ public class SubGradient implements IBound {
 	}
 
 	/**
-	 * Find which team will performed each operation
+	 * Find which team will perform each operation (ie solve SPL1)
 	 * @param pi Lagrange multipliers vector
 	 * @return team/operation matrix
 	 */
@@ -77,8 +79,8 @@ public class SubGradient implements IBound {
 	}
 
 	/**
-	 * Find which team will do overtime
-	 * @param pi
+	 * Find which team will do overtime (ie solve SPL2)
+	 * @param pi Lagrange multipliers vector
 	 * @return team vector with overtime hours
 	 */
 	private int[] solveSPL2(double[] pi){
@@ -126,11 +128,10 @@ public class SubGradient implements IBound {
 		return gamma;
 	}
 	
-
 	/**
-	 * Calculate gamma sum
+	 * Calculate gamma squared sum
 	 * @param gamma values
-	 * @return gamma sum
+	 * @return gamma squared sum
 	 */
 	private double sumGamma(double[] gamma){
 		double res = 0;
@@ -138,5 +139,4 @@ public class SubGradient implements IBound {
 			res += gamma[i]*gamma[i];
 		return res;
 	}
-
 }

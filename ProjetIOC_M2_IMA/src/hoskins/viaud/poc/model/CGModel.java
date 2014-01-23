@@ -3,30 +3,20 @@
  */
 package hoskins.viaud.poc.model;
 
-import java.util.ArrayList;
-
 import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.SolutionColumn;
 import ilog.concert.IloException;
 import ilog.concert.IloIntVar;
 import ilog.concert.IloLinearNumExpr;
-import ilog.concert.IloNumVar;
 import ilog.cplex.IloCplex;
 
 /**
+ * Column generation model use in the column generation algorithm
+ * The objective is to find the best new profile (ie new column) to add
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
 public class CGModel extends AbstractModel {
-
-	/* (non-Javadoc)
-	 * @see hoskins.viaud.poc.model.AbstractModel#solve()
-	 */
-	@Override
-	public void solve() {
-		// TODO Auto-generated method stub
-
-	}
 
 	/* (non-Javadoc)
 	 * @see hoskins.viaud.poc.model.AbstractModel#solve()
@@ -43,9 +33,6 @@ public class CGModel extends AbstractModel {
 			for(int j = 0; j < u.length; j++)
 				u[j] = cplex.intVar(0,Instance.instance.getA()[team][j]);
 			
-			//Fake decision variable - a
-			IloIntVar a = cplex.intVar(1, 1);
-
 			//Create objective function
 			IloLinearNumExpr of = cplex.linearNumExpr();
 
@@ -89,67 +76,13 @@ public class CGModel extends AbstractModel {
 		return null;
 	}
 	
-	/**
-	 * Checks if at least one work profile can be affected to a team
-	 * @param matriceV matrix of columns
-	 * @param team id of team
-	 * @return true if work profile can be performed by team, false otherwise
-	 */
-	private boolean checkValidity(int[][] matriceV, int team){
-		boolean result = true;
-		int e = 0, o = 0;	
-		while(e++ < matriceV[0].length && result){
-			while(o++ < matriceV.length && result){
-				if(matriceV[o][e] == 1)
-					if(Instance.instance.getA()[team][o] == 0)
-						result = false;
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Checks if a work profile can be affected to a team
-	 * @param matriceV matrix of columns
-	 * @param column id of profile
-	 * @param team id of team
-	 * @return true if work profile can be performed by team, false otherwise
-	 */
-	private boolean checkValidity(int[][] matriceV, int column, int team){
-		boolean result = true;
-		int o = -1;	
-		while(++o < matriceV.length && result){
-			if(matriceV[o][column] == 1)
-				if(Instance.instance.getA()[team][o] == 0)
-					result = false;
-		}
-		return result;
-	}
-	
-	private int[] getOperations(int team){
-		int sum = 0;
-		for(int j = 0; j < Instance.instance.getNo(); j++)
-			if(Instance.instance.getA()[team][j] == 1)
-				sum ++;
-		
-		int[] result = new int[sum];
-		int i = 0;
-		for(int j = 0; j < Instance.instance.getNo(); j++)
-			if(Instance.instance.getA()[team][j] == 1)
-				result[i++] = j;
-		
-		return result;
-	}
-
 	@Override
-	public double solve(int[][] matriceV, double[] profit) {
-		// TODO Auto-generated method stub
+	public double solve(int[][] matrix, double[] profitTable, int[] teamTable) {
 		return 0;
 	}
 
 	@Override
-	public double[] solveDual(int[][] matriceV, double[] profit) {
-		// TODO Auto-generated method stub
+	public double[] solveDual(int[][] matrix, double[] profitTable, int[] teamTable) {
 		return null;
 	}
 }

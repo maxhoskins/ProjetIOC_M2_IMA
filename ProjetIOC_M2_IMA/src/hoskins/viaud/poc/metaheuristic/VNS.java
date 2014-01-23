@@ -11,6 +11,11 @@ import hoskins.viaud.poc.structure.Solution;
 
 /**
  * Run a Variable Neighborhood Search (VNS) algorithm as meta-heuristic for the problem
+ * Start from an initial solution
+ * Try to applied local search methods on the solution
+ * Keep the best infeasible solution found
+ * Make this on feasible and compare it to the current solution
+ * Select the best solution between two of them and repeat the algorithm
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -21,8 +26,19 @@ public class VNS implements MetaHeuristic {
 	 */
 	@Override
 	public Solution performMetaHeuristic(Solution s, int nbIterations, Object ... params) {
-		//Initialize iterations and local serach counters
-		int i = 0, k, nbLSMethod = (int)params[0];
+		return runMetaHeursistic(s, nbIterations, (int)params[0]);
+	}
+	
+	/**
+	 * Perform VNS algorithm
+	 * @param s solution
+	 * @param nbIterations number of iterations
+	 * @param nbLSMethod number of local search methods
+	 * @return
+	 */
+	private Solution runMetaHeursistic(Solution s, int nbIterations, int nbLSMethod){
+		//Initialize iterations and local search counters
+		int i = 0, k;
 		
 		//Start VNS algorithm
 		do {
@@ -44,7 +60,6 @@ public class VNS implements MetaHeuristic {
 					k++;
 			}
 			while(k != nbLSMethod);
-			
 			//Go to next iteration
 			i++;
 		}
@@ -79,5 +94,4 @@ public class VNS implements MetaHeuristic {
 		}
 		return sol;
 	}
-
 }
