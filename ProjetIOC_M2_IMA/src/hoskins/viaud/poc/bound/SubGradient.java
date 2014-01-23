@@ -64,7 +64,7 @@ public class SubGradient implements IBound {
 	private int[][] solveSPL1(double[] pi){
 		int[][] x = new int[Instance.instance.getNe()][Instance.instance.getNo()];
 		for(int j = 0; j < Instance.instance.getNo(); j++){
-			double maxProfit = -1; int team = 0;
+			double maxProfit = Integer.MIN_VALUE; int team = 0;
 			for(int i = 0; i < Instance.instance.getNe(); i++)
 				if(Instance.instance.getA()[i][j] == 1)
 					if(Instance.instance.getP()[i][j] + pi[i] * Instance.instance.getT()[j] > maxProfit){

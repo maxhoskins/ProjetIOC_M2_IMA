@@ -8,15 +8,11 @@ import hoskins.viaud.poc.bound.SubGradient;
 import hoskins.viaud.poc.heuristic.ConstructiveHeuristic;
 import hoskins.viaud.poc.metaheuristic.MSEA;
 import hoskins.viaud.poc.metaheuristic.VNS;
-import hoskins.viaud.poc.model.AbruptModel;
-import hoskins.viaud.poc.model.ContinuousModel;
-import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 import hoskins.viaud.poc.utils.InstanceReader;
 import hoskins.viaud.poc.utils.SolutionWriter;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * @author Maxim HOSKINS and Quentin VIAUD

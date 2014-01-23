@@ -85,7 +85,7 @@ public class RPSModel extends AbstractModel {
 					result[j] = cplex.getValue(mu[j]);
 				}
 				for(int e = 0; e < Instance.instance.getNe(); e++){
-					result[Instance.instance.getNo()+e] = cplex.getValue(pi[e]);
+					result[Instance.instance.getNo() + e] = cplex.getValue(pi[e]);
 				}
 			}
 			cplex.end();

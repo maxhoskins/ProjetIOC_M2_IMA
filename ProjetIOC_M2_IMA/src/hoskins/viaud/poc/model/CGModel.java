@@ -49,11 +49,11 @@ public class CGModel extends AbstractModel {
 			//Create objective function
 			IloLinearNumExpr of = cplex.linearNumExpr();
 
-			//SUM[c_je + mu_j] - pi_e - c * theta
+			//SUM[c_je - mu_j] - pi_e - c * theta
 			for(int j = 0; j < u.length; j++){
 				of.addTerm(Instance.instance.getP()[team][j] - pi[j], u[j]);
 			}
-			of.addTerm(-(pi[Instance.instance.getNo() + team] + Instance.instance.getC() * theta), a);
+			of.setConstant(-pi[Instance.instance.getNo() + team] - Instance.instance.getC() * theta);
 			
 			cplex.addMaximize(of);
 

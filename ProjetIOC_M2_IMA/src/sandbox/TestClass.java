@@ -4,7 +4,6 @@
 package sandbox;
 
 import hoskins.viaud.poc.heuristic.ConstructiveHeuristic;
-import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**

@@ -49,7 +49,7 @@ public class ColumnGeneration implements IBound {
 			bestColumn = new SolutionColumn(null,-1);
 			int bestTeam = -1;
 			for(int e = 0; e < Instance.instance.getNe(); e++){
-				for(int theta = 0; theta < Math.round(Instance.instance.getS()/60); theta++){
+				for(int theta = 0; theta < (int) Math.ceil(Instance.instance.getS()/60); theta++){
 					SolutionColumn sc = new CGModel().solveGC(pi, e, theta);
 					if(sc.getOf() > bestColumn.getOf()){
 						bestColumn = sc;
