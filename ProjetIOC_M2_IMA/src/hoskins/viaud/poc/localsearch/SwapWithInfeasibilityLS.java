@@ -7,8 +7,9 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Perform a swap method as local search method (swap between all operations)
- * Infeasible solutions are allowed
+ * Perform a swap method as local search method (swap between all operations).<br />
+ * The LS swaps two operations between each other while an improvement modification is available.
+ * <b>Infeasible solutions are allowed</b>
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */

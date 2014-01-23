@@ -11,7 +11,11 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Class to read instance from .csv files
+ * Class to read instance from .csv files.<br />
+ * the format of the file is the following : <br /> 
+ * Line 1 : number of operationsnombre d'opérations<br /> 
+ * Line 2 : number of teamsnombre d'équipes<br /> 
+ * Line 3 : list of operation durations
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */

@@ -7,7 +7,8 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Perform a swap neighboring method as local search method (swap between two adjacent operations)
+ * Perform a swap neighboring method as local search method (swap between two adjacent operations).<br />
+ * The LS swaps two adjacent operations while improving solution available.
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */

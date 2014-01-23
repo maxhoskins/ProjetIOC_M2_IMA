@@ -51,7 +51,7 @@ public class ColumnGeneration implements IBound {
 			for(int e = 0; e < Instance.instance.getNe(); e++){
 				for(int theta = 0; theta < (int) Math.ceil(Instance.instance.getS()/60); theta++){
 					SolutionColumn sc = new CGModel().solveGC(pi, e, theta);
-					if(sc.getOf() > bestColumn.getOf()){
+					if(sc.getProfit() > bestColumn.getProfit()){
 						bestColumn = sc;
 						bestTeam = e;
 					}
@@ -66,7 +66,7 @@ public class ColumnGeneration implements IBound {
 			
 			tableauEquipe = updateTeam(tableauEquipe, bestTeam);
 		}
-		while(bestColumn.getOf() < 0);
+		while(bestColumn.getProfit() < 0);
 
 		System.out.print("-----------------------------------------------------------------\n");
 		System.out.print("Column Generation Bound : "+Math.round(result*100.0)/100.0 +"\n");

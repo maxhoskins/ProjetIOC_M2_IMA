@@ -12,7 +12,11 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Write a solution in a .csv file
+ * Write a solution in a .csv file.<br />
+ * The format of the file is the following : <br />
+ * Line 1 : Net profit<br />
+ * Line 2 : Number of overtime hours worked<br />
+ * For each of the other lines:  list of operations performed by each team<br />
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -63,7 +67,7 @@ public class SolutionWriter {
 	}
 
 	/**
-	 * Build file
+	 * Build solution and write to file
 	 */
 	private void buildResult(){
 		out.println(this.s.getOf());

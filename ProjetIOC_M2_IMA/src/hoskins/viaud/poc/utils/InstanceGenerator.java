@@ -116,7 +116,7 @@ public class InstanceGenerator {
 
 
 	/**
-	 * Builds file
+	 * Builds instance and writes it to file
 	 */
 	private void buildInstance(){
 		out.println(this.nbOperations);

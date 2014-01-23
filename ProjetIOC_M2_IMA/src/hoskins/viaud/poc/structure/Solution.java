@@ -4,7 +4,7 @@
 package hoskins.viaud.poc.structure;
 
 /**
- * Store the representation of a solution
+ * Store the representation of a solution.
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -43,10 +43,12 @@ public class Solution implements Cloneable{
 		calculateOF();
 	}
 	
+
 	/**
 	 * Create a solution only for cloning
 	 * @param x team/operation matrix
 	 * @param h overtime working time
+	 * @param of value of objective function
 	 */
 	private Solution(int[][] x, int[] h, double of) {
 		this.x = x;
@@ -65,34 +67,66 @@ public class Solution implements Cloneable{
 		this.x[i][j] = value;
 	}
 
+	/**
+	 * 
+	 * @return Matrix of team/operations affectations
+	 */
 	public int[][] getX() {
 		return x;
 	}
 
+	/**
+	 * Update matrix of team/operations affectations
+	 * @param x new matrix of team/operations affectations
+	 */
 	public void setX(int[][] x) {
 		this.x = x;
 	}
 
+	/**
+	 * 
+	 * @return Table of number of overtime hours of each team
+	 */
 	public int[] getH() {
 		return h;
 	}
 
+	/**
+	 * Update table of number of overtime hours of each team
+	 * @param h new table of number of overtime hours of each team
+	 */
 	public void setH(int[] h) {
 		this.h = h;
 	}
 	
+	/**
+	 * 
+	 * @return "Chromosome" representation of a solution
+	 */
 	public int[] getS() {
 		return s;
 	}
 
+	/**
+	 * Update "Chromosome" representation of a solution
+	 * @param s new "Chromosome" representation of a solution
+	 */
 	public void setS(int[] s) {
 		this.s = s;
 	}
 
+	/**
+	 * 
+	 * @return Value of objective function
+	 */
 	public double getOf() {
 		return of;
 	}
 
+	/**
+	 * Update value of objective function
+	 * @param of new value of objective function
+	 */
 	public void setOf(double of) {
 		this.of = of;
 	}
@@ -135,7 +169,7 @@ public class Solution implements Cloneable{
 	}
 	
 	/**
-	 * Calculate OF
+	 * Calculate objective function
 	 */
 	public double calculateOF(){
 		of = 0.0;

@@ -9,7 +9,7 @@ import hoskins.viaud.poc.structure.Solution;
 import java.util.ArrayList;
 
 /**
- * Elite Pool structure
+ * Elite Pool structure. The pool stores all the solutions that we ahve chosen to keep.
  * @author Maxim Hoskins & Quentin Viaud
  */
 public class ElitePool {

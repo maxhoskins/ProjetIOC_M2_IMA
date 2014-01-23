@@ -10,7 +10,9 @@ import hoskins.viaud.poc.structure.Solution;
 
 
 /**
- * Performs path relinking local search
+ * Performs path relinking local search.<br />
+ * The LS starts with an initial and final solution. It gradually modifies the initial solution to become the final solution. 
+ * At each modification, the solution is evaluated and at the end, the best feasible solution is returned
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */

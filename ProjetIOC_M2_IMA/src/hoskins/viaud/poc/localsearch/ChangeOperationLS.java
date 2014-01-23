@@ -7,7 +7,8 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Perform a change operation method as local search
+ * Perform a change operation method as local search. <br />
+ * The LS modifies a solution by changing one and only one team affected an operation while an improvement is possible.
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
@@ -63,7 +64,6 @@ public class ChangeOperationLS implements LocalSearch {
 
 	@Override
 	public Solution performLocalSearch(Solution s1, Solution s2) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

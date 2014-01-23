@@ -11,12 +11,18 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Heuristic method using Sample GRASP methodology (selection of best impovement within sub group of possible improvements)
+ * Heuristic method using Sample GRASP methodology (selection of best improvement within sub group of possible improvements).<br />
+ * Rather than selected the best improvement out of all possible improvements, it selects the best improvement out
+ * of a subgroup of possible improvements.
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
 public class SampleHeuristic {
 
+
+	/**
+	 * List of operations sorted by number of teams able to handle operation
+	 */
 	private static int[] o;
 
 	/**
@@ -26,7 +32,7 @@ public class SampleHeuristic {
 	public static Solution performHeuristic(){
 		//Initialize the problem to be solved by heuristic method
 		initialization();
-		
+
 		//Construct a solution
 		Solution s = construction();
 
@@ -52,8 +58,8 @@ public class SampleHeuristic {
 	 * (ie sort operations by increasing number of teams that can make it)
 	 */
 	private static void initialization(){
-ArrayList<Integer> temp = new ArrayList<Integer>();
-		
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+
 		//Find the number of teams allowed to perform each operation
 		for(int j = 0; j < Instance.instance.getNo(); j++){
 			int sum = 0;
@@ -62,9 +68,9 @@ ArrayList<Integer> temp = new ArrayList<Integer>();
 					sum++;
 			temp.add(sum);
 		}
-		
+
 		o = new int[Instance.instance.getNo()];
-		
+
 		//Sort the previous table by increasing number of teams
 		for(int j = 0; j < Instance.instance.getNo(); j++){
 			int nbTeam = Instance.instance.getNe() + 1, op = -1;
@@ -102,8 +108,8 @@ ArrayList<Integer> temp = new ArrayList<Integer>();
 			int workingTime = Integer.MAX_VALUE;
 			int chosenTeam = 0;
 			possibleChoices.clear();
-			
-			
+
+
 			// identify all possible choices
 			for(int j = 0; j < Instance.instance.getNe(); j++){
 				if(Instance.instance.getA()[j][o[i]] == 1){
@@ -124,8 +130,8 @@ ArrayList<Integer> temp = new ArrayList<Integer>();
 				}
 				possibleChoices.remove(tempIndex);
 			}
-			
-			
+
+
 			//Apply change on the selected team (ie set x = 1)
 			t[chosenTeam] = t[chosenTeam] + Instance.instance.getT()[o[i]];
 			x[chosenTeam][o[i]] = 1;

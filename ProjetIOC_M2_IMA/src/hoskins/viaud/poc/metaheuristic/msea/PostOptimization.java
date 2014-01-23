@@ -10,7 +10,8 @@ import hoskins.viaud.poc.structure.Solution;
 
 
 /**
- * Class that performs the post optimization
+ * Class that performs the post optimization. <br />
+ * The class performs a path-relinking between all solution pairs until no more improvements are possible.
  * @author Maxim Hoskins & Quentin Viaud
  */
 public class PostOptimization {

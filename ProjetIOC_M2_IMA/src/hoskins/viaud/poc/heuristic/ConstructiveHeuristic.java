@@ -11,12 +11,15 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Heuristic method
+ * This class calculates a solution to the problem using our heuristic
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
 public class ConstructiveHeuristic {
 	
+	/**
+	 * List of operations sorted by number of teams able to handle operation
+	 */
 	private static int[] o;
 	
 	/**

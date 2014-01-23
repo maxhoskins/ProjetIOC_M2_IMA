@@ -7,8 +7,9 @@ import hoskins.viaud.poc.structure.Instance;
 import hoskins.viaud.poc.structure.Solution;
 
 /**
- * Perform a change operation method as local search
- * Infeasible solutions are allowed
+ * Perform a change operation method as local search.<br />
+ * The LS modifies a solution by changing one and only one team affected an operation while an improvement is possible.<br />
+ * <b>Infeasible solutions are allowed<b/>
  * @author Maxim HOSKINS and Quentin VIAUD
  *
  */
