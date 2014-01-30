@@ -58,13 +58,6 @@ public class ColumnGeneration implements IBound {
 				}
 			}
 			
-			/*
-			System.out.println(bestColumn.getProfit());
-			System.out.println(bestTeam);
-			for(int i =0; i < bestColumn.getA().length; i++)
-				System.out.print(bestColumn.getA()[i]+" ");
-			*/
-			
 			//Merge matrix and new column
 			matrix = merge(matrix,bestColumn.getA());
 
